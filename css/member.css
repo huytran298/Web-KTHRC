@@ -1,0 +1,80 @@
+#body .member{
+    width: auto;
+    height: 200px;
+    margin: 20px 20px 20px 20px;
+    border-radius: 10px 10px 10px 10px;
+    overflow: hidden; 
+    border :3px solid #0332b5;
+    
+    position: inline-block;
+}
+@font-face {
+    font-family: SfProRegular;
+    src: url(../font/SF-Pro-Display/SF-Pro-Display-Regular.otf);
+}
+@font-face{
+    font-family: SfProLightItalic;
+    src: url(../font/SF-Pro-Display/SF-Pro-Display-LightItalic.otf);
+}
+@font-face {
+    font-family: SfProBold;
+    src: url(../font/SF-Pro-Display/SF-Pro-Display-Bold.otf);
+}
+.member:hover{
+    animation: shadow-animation 0.5s ease-in-out;
+    transform: scale(1.013);
+    border : 3px solid white;
+    box-shadow: 0 0 20px  rgb(3, 50, 181, 1);
+}
+
+/* Animation chạy border */
+@keyframes shadow-animation {
+    0% {
+        box-shadow: 0 0 20px  rgb(3, 50, 181, 0);
+    }
+    25% {
+        box-shadow: 0 0 20px  rgb(3, 50, 181, 0.25);
+    }
+    50% {
+        box-shadow: 0 0 20px  rgb(3, 50, 181, 0.5);
+    }
+    75% {
+        box-shadow: 0 0 20px  rgb(3, 50, 181, 0.75);
+    }
+    100% {
+        box-shadow: 0 0 20px  rgb(3, 50, 181, 1);
+    }
+}
+#body .member .info {
+    margin: 10px 10px 10px 10px;
+    position: relative;
+    font-family: SfProRegular;
+}
+#body .member div {
+    
+    display: block;  
+    float: left;
+}
+.more {
+    position: absolute; 
+    bottom: 10px;
+}
+.name {
+    font-family: SfProBold;
+    font-size: larger;
+    
+}
+.content{
+    padding-left: 10px;
+}
+.quotes{
+    font-family: SfProLightItalic;
+}
+.quotes::before{
+    content: 'Câu nói : ';
+}
+.img img{
+    width: auto;
+    height: 180px;
+    border-radius: 10px 10px 10px 10px;
+}

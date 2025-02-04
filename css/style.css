@@ -8,58 +8,66 @@
     src: url(../font/SF-Pro-Display/SF-Pro-Display-Regular.otf);
 }
 #header{
-    height: 70px;
-    background-color: #001c68;
+    height: 80px;
+    background-color: #0332b5;
     padding: 0px 30px;
+    border-radius: 0px 0px 4px 4px;
+    
 }
- #logo img{
+#logo img{
     width: 60px;
     height: 60px;
     display: block;
     float: left;
     border-radius: 100%;
-    padding-top: 2.5px;
+    margin-top: 10px;
+    background-size: cover;
+    background-position: center;
+    transition: box-shadow 0.3s ease; 
+}
+#logo img:hover{
+    box-shadow: 0px 5px 15px 5px rgb(0, 15, 56, 0.6);
 }
 #header #list{
     display: block;  
     float: right;
-    height: 70px;
+    height: 100%;
     width: auto;
 
 }
 
-
 #list > li{
     display: inline-block;
-    height: 70px;
+    height: 100%;
     position: relative;
-    color : white;
+    background: linear-gradient(to bottom, #fff 0%, #fff 100%); /* Gradient trắng */
+    background-size: 100% 0%; /* Ban đầu không hiển thị */
+    background-repeat: no-repeat;
+    transition: background-size 0.4s ease; /* Hiệu ứng mượt */
 }
 
-#header #list li a{
+#list > li:hover {
+    background: linear-gradient(to top, #fff 0%, #fff 100%); /* Gradient trắng */
+    background-size: 100% 100%; /* Ban đầu không hiển thị */
+    background-repeat: no-repeat;
+    transition: background-size 0.4s ease; 
+    
+}
+#list > li > a{
     font-size: 25px;
     font-weight: bold;
-    line-height: 70px;
+    line-height: 80px;
     padding: 0px 20px;
-    height: 70px;
+    height: 100%;
     text-align:center;
     vertical-align: middle;
     display: inline-block;
     margin: 0px 0px 0px 0px;
-    
+    color : white;
+    text-decoration: none;
     font-family: SfProRegular;
 }
-#list  li:hover > a {
-    background-color: white;
-    color : #001c68;
-}
-#body #member li{
-    width: auto;
-    height: 50px;
-    display: inline-block;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-#body #member #idMember #img img{
-    width : 30px;
-    height: 50px;
+#list > li:hover > a {
+    
+    color : #0332b5;
 }
