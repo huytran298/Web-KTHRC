@@ -1,0 +1,34 @@
+@font-face {
+    font-family: Regular;
+    src: url(/font/Bai_Jamjuree/BaiJamjuree-Regular.ttf);
+}
+@font-face {
+    font-family: Thin;
+    src: url(../font/Bai_Jamjuree/BaiJamjuree-Light.ttf);
+}
+
+@font-face {
+    font-family: Bold;
+    src: url(/font/Bai_Jamjuree/BaiJamjuree-Regular.ttf);
+}
+
+#h1{
+    font-weight: bold;
+    font-family: Bold;
+}
+.crop {
+    
+    position: relative;
+}
+#image{
+    background-image: url('/img/reponsive/1.jpg');
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+    top: 0;
+    filter: blur(3px);
+    height: 500px;
+    width: 100%;
+    transition: all 2s ease;
+}

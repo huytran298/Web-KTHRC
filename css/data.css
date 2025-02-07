@@ -1,0 +1,92 @@
+
+@font-face {
+    font-family: Regular;
+    src: url(/font/Bai_Jamjuree/BaiJamjuree-Regular.ttf);
+}
+@font-face {
+    font-family: Thin;
+    src: url(/font/Bai_Jamjuree/BaiJamjuree-Light.ttf);
+}
+
+@font-face {
+    font-family: Bold;
+    src: url(/font/Bai_Jamjuree/BaiJamjuree-Bold.ttf);
+}
+#device {
+    
+    margin: 10px;   
+}
+#device > div {
+    
+    height: 200px; /* Hoặc bất kỳ giá trị nào bạn muốn */
+    border-radius: 20px;
+    font-family: Regular;
+    border-width: 3px;
+    
+    
+}
+
+
+.content{
+    margin: 10px;
+    font-family: Regular;
+}
+.title{
+    font-family: Bold;
+    font-size: 25px;
+}
+.btnDevice{
+    border: 0px;
+    height: 40px;
+    width: 100%;
+    text-align: center;   
+    border-radius: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    font-family: Bold;
+    font-size: 15px;
+    font-weight : bold ;
+}
+
+.icon > svg{
+    background-color: #39566c;
+}
+.dropdown-item > a{
+    text-decoration: none;
+    font-size: 17px;
+    font-family: Bold;
+}
+.dropdown-item:hover {
+    background-color: #a5a9cb !important;
+    
+}
+.dropdown-item:hover > a{
+    color : #383e6f !important;
+    
+}
+#listDevice{
+    width: 100%;
+}
+#infoName::before{
+    content: 'Name device : ';
+}
+#infoId::before{
+    content: 'Id device : ';
+}
+#infoType::before{
+    content: 'Device type : ';
+}
+.btnSave{
+    margin-right: 10px;
+}
+#graphData{
+    
+    
+    height: auto;
+    border-radius: 20px;
+    margin: 10px;
+    border: 2px solid #ffffff;  
+}
+#myPlot{
+    font-family: Regular;
+}

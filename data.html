@@ -4,26 +4,65 @@
     
 </head>
 <link rel="stylesheet" href="./css/style.css">
+<link rel="stylesheet" href="./css/data.css">
+<link href="/css/custom.css" rel="stylesheet">
+<link href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+<script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="./js/fetchDevice.js"></script>
 <body>
 <div id = "header">
     <div id = "logo">
-        <a href = "./index.html"><img src="./img/kth.png" alt="Rabbit Cave"></a>
+        <a href = "./index.html"><img src="./img/kth.svg" alt="Rabbit Cave"></a>
     </div>
     <div id = "list">
-        <li><a href = "/index.html">Home</a></li>
-        <li><a>Product</a></li>
-        <li><a href="/member.html">Member</a></li>
-        <li><a href = "/data.html">Data</a></li>
+        <li><a href = "/index.html" class="text-primary">Home</a></li>
+        <li><a class="text-primary">Product</a></li>
+        <li><a href="/member.html" class="text-primary">Member</a></li>
+        <li><a href = "/data.html" class="text-primary">Data</a></li>
     </div>
     
         
 </div>
-<div id = "body"> 
-    <script>
-        
-    </script>
+<div id = "device" class = "grid" style="--bs-row:2; --bs-gap: .25em 1rem;">
+    <div id = "ID" class="g-col-6 g-col-md-6 bg-secondary border border-primary border-2">
+        <div class = "content"> 
+            <p class = "title">Choose devices</p>    
+            <div class="dropdown">
+                <button class="btnDevice btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
+                  Devices   
+                </button>
+                <ul id = "listDevice" class="dropdown-menu bg-secondary border border-primary">
+                  
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id = "info" class="g-col-6 g-col-md-6 bg-secondary border border-primary border-2">
+        <div  class = "content">
+            <p class = "title">Device information</p>
+            <p id = "infoName"></p>
+            <p id = "infoId"></p>
+            <p id = "infoType"></p>
+        </div>
+    </div>
 </div>
-
+<div id = "graphData" class="bg-primary border border-secondary border-2">
+    <div id="myPlot" style="width:100%;"></div>
+</div>
+<div class="btnSave d-grid gap-2 d-md-flex justify-content-md-end">
+    <button style="border-radius: 20px;" class="btn btn-secondary border border-primary me-md-2" type="button">Save as csv</button>
+    <button style="border-radius: 20px;" class="btn btn-secondary border border-primary" type="button">Save as xlsx</button>
+  </div>
 </body>
+<script>
+fecthDevice('http://localhost:5000/device');
+drawData();
+</script>
 
+<script>
+    
+    </script>
+    
 </html>

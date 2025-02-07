@@ -1,80 +1,56 @@
-#body .member{
-    width: auto;
-    height: 200px;
-    margin: 20px 20px 20px 20px;
-    border-radius: 10px 10px 10px 10px;
-    overflow: hidden; 
-    border :3px solid #0332b5;
-    
-    position: inline-block;
+@font-face {
+    font-family: Regular;
+    src: url(/font/Bai_Jamjuree/BaiJamjuree-Regular.ttf);
 }
 @font-face {
-    font-family: SfProRegular;
-    src: url(../font/SF-Pro-Display/SF-Pro-Display-Regular.otf);
-}
-@font-face{
-    font-family: SfProLightItalic;
-    src: url(../font/SF-Pro-Display/SF-Pro-Display-LightItalic.otf);
+    font-family: Thin;
+    src: url(../font/Bai_Jamjuree/BaiJamjuree-Light.ttf);
 }
 @font-face {
-    font-family: SfProBold;
-    src: url(../font/SF-Pro-Display/SF-Pro-Display-Bold.otf);
+    font-family: Italic;
+    src: url(../font/Bai_Jamjuree/BaiJamjuree-Italic.ttf);
+}
+@font-face {
+    font-family: Bold;
+    src: url(/font/Bai_Jamjuree/BaiJamjuree-Regular.ttf);
+}
+.member {
+    max-height: 150px;
+    transition: 0.3s;
 }
 .member:hover{
-    animation: shadow-animation 0.5s ease-in-out;
-    transform: scale(1.013);
-    border : 3px solid white;
-    box-shadow: 0 0 20px  rgb(3, 50, 181, 1);
+    scale: 1.01;
 }
-
-/* Animation chạy border */
-@keyframes shadow-animation {
-    0% {
-        box-shadow: 0 0 20px  rgb(3, 50, 181, 0);
-    }
-    25% {
-        box-shadow: 0 0 20px  rgb(3, 50, 181, 0.25);
-    }
-    50% {
-        box-shadow: 0 0 20px  rgb(3, 50, 181, 0.5);
-    }
-    75% {
-        box-shadow: 0 0 20px  rgb(3, 50, 181, 0.75);
-    }
-    100% {
-        box-shadow: 0 0 20px  rgb(3, 50, 181, 1);
-    }
+.info {
+    width: calc(100% - 20px);
+    margin-left: 20px;
 }
-#body .member .info {
-    margin: 10px 10px 10px 10px;
-    position: relative;
-    font-family: SfProRegular;
-}
-#body .member div {
-    
-    display: block;  
-    float: left;
-}
-.more {
-    position: absolute; 
-    bottom: 10px;
-}
-.name {
-    font-family: SfProBold;
-    font-size: larger;
+.topLine{
+    border: 2px solid rgb(39, 39, 39);
+    border-radius: 20px;
+    display: flex;
+    float: right;
+    width: 45%;
+    transition: width 2s, border 2s;
+    margin-bottom: 10px;
     
 }
-.content{
-    padding-left: 10px;
+.avatar{
+    max-width: 100%;
+    width: 100%;
+    border-radius: 20px;
 }
-.quotes{
-    font-family: SfProLightItalic;
+.name::before {
+    content: 'Họ và tên : ';
 }
-.quotes::before{
-    content: 'Câu nói : ';
+.quote::before {
+    
+    content: 'Slogan : ';
 }
-.img img{
-    width: auto;
-    height: 180px;
-    border-radius: 10px 10px 10px 10px;
+.quote{
+    font-family: Italic;
+}
+.member:hover > .topLine{
+    width: calc(80%);
+    border: 2px solid #5b65b5;
 }

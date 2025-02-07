@@ -4,26 +4,57 @@
     
 </head>
 <link rel="stylesheet" href="./css/style.css">
+<link rel="stylesheet" href="./css/index.css">
+<link href="/css/custom.css" rel="stylesheet">
+<link href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+<script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" ></script>
 <body>
 <div id = "header">
     <div id = "logo">
-        <a href = "./index.html"><img src="./img/kth.png" alt="Rabbit Cave"></a>
+        <a href = "./index.html"><img src="./img/kth.svg" alt="Rabbit Cave"></a>
     </div>
     <div id = "list">
-        <li><a href = "/index.html">Home</a></li>
-        <li><a>Product</a></li>
-        <li><a href="/member.html">Member</a></li>
-        <li><a href = "/data.html">Data</a></li>
+        <li><a href = "/index.html" class="text-primary">Home</a></li>
+        <li><a class="text-primary">Product</a></li>
+        <li><a href="/member.html" class="text-primary">Member</a></li>
+        <li><a href = "/data.html" class="text-primary">Data</a></li>
     </div>
+</div>
+<div id = "main">
     
+    <div class = "crop container-fluid">
+        <div id = "image"></div>
+        <script> 
+            
+            var index = 1;
+            setInterval (function(){
+            if (index === 9) {
+                index = 1;
+            }
+            document.getElementById("image").style.backgroundImage = 'url("../img/reponsive/' +index + '.jpg")';
+            index++;
+            } , 3000);
         
+        </script> 
+        <div id ="text" style="z-index: 100;  padding-top: 6%; position: absolute !important; width:  calc(100vw - 30px);">
+        <h1 id = "h1" class="display-1" style="text-shadow: 2px 2px rgb(0, 0, 0, 0.5); text-align: center;">Rabbit Cave</h1>   
+        <p class="h6" style="text-shadow: 2px 2px rgb(0, 0, 0, 0.5); text-align: center;">Falling down the rabbit hole</p>
+        <div class="container text-center">
+            <div class="row justify-content-md-center">
+                <div class="col col-lg-2">
+                  
+                </div>
+                <div class="col-md-auto">
+                    
+                </div>
+                <div class="col col-lg-2">
+                  
+                </div>
+              </div>
+        </div>
+        </div>
+    </div>
 </div>
-<div id = "body"> 
-    <script>
-        
-    </script>
-</div>
-
 </body>
 
 </html>
