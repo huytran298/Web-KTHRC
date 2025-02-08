@@ -1,7 +1,7 @@
 let xArray = [];
 let yArray = [];
 const timeIntervals = 500;
-
+let devices_check = {};
 async function fecthDevice(apiUrl) {
     try{
         const response = await fetch(apiUrl);
@@ -28,6 +28,8 @@ async function fecthDevice(apiUrl) {
         }
         const devices = Array.isArray(data) ? data : [data];
         devices.forEach(device => {
+            devices_check[device.id] = false;
+
             const listItem = document.createElement("li");
             listItem.classList.add("dropdown-item"); // Gán class cho mỗi thiết bị
             
@@ -49,7 +51,6 @@ async function fecthDevice(apiUrl) {
        console.error("Error fetching data:", error);
        console.error(apiUrl);
     }
-       
 }
 async function getDevice(apiUrl, id){
     try {
@@ -77,11 +78,15 @@ async function getDevice(apiUrl, id){
         });
         console.log("Fetched devices:", devices);
         //call function then set time to reapeatlly call api to refresh table
+        for (const key in devices_check.keys()) {
+            devices_check[key] = false;
+        }
+        devices_check[id] = true;
         sendApiRequest('http://localhost:5000/record?deviceID=', id);
         //setTimeout(() => getData('http://localhost:5000/record?deviceID=', id), timeIntervals);
 
 
-    }catch(error){
+    } catch(error){
         console.error("Error fetching data: ", error);
         console.error(apiUrl);
     }
@@ -116,8 +121,10 @@ async function resetTable() {
     Plotly.newPlot("myPlot", data, layout,  {scrollZoom: true});
 }
 async function getData(apiUrl, id){
-    
     try {
+        if (devices_check[id] === false) {
+            throw new Error("turn off device")
+        }
         apiUrl += id;
         const response = await fetch(apiUrl);
         if(!response.ok){
@@ -184,12 +191,4 @@ function sendApiRequest(apiUrl, id) {
     getData(apiUrl, id).finally(() => {
         setTimeout(() => sendApiRequest(apiUrl, id), timeIntervals);
     });
-}
-
-function sendApiRequest_nonRecursion(apiUrl, id){
-    function createIntervals(){
-        function run(){
-            //getData(apiUrl, id).then(() )
-        }
-    }
 }
