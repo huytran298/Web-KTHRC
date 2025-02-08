@@ -8,7 +8,7 @@ $body-color: #ffffff;
 $secondary:#383e6f;
 $primary:#a5a9cb;
 $tertiary : #5b65b5;
-$enable-grid-classes: false;
+$enable-grid-classes: true;
 $enable-cssgrid: true;
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";

@@ -17,7 +17,7 @@
     font-family: Bold;
 }
 .crop {
-    
+    height: 500px;
     position: relative;
 }
 #image{
