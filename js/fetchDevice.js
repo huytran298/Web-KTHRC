@@ -1,7 +1,8 @@
 let xArray = [];
 let yArray = [];
 const timeIntervals = 500;
-let devices_check = {};
+
+let devices_intervals = undefined;
 async function fecthDevice(apiUrl) {
     try{
         const response = await fetch(apiUrl);
@@ -28,8 +29,7 @@ async function fecthDevice(apiUrl) {
         }
         const devices = Array.isArray(data) ? data : [data];
         devices.forEach(device => {
-            devices_check[device.id] = false;
-
+            
             const listItem = document.createElement("li");
             listItem.classList.add("dropdown-item"); // Gán class cho mỗi thiết bị
             
@@ -78,11 +78,18 @@ async function getDevice(apiUrl, id){
         });
         console.log("Fetched devices:", devices);
         //call function then set time to reapeatlly call api to refresh table
-        for (const key in devices_check.keys()) {
-            devices_check[key] = false;
+        
+        if(devices_intervals !== undefined){
+            
+            clearInterval(devices_intervals);
+        
         }
-        devices_check[id] = true;
-        sendApiRequest('http://localhost:5000/record?deviceID=', id);
+        devices_intervals = setInterval(() => {
+            console.log("update Data");
+            getData('http://localhost:5000/record?deviceID=', id);
+        }, timeIntervals);
+        
+        //sendApiRequest('http://localhost:5000/record?deviceID=', id);
         //setTimeout(() => getData('http://localhost:5000/record?deviceID=', id), timeIntervals);
 
 
@@ -122,9 +129,7 @@ async function resetTable() {
 }
 async function getData(apiUrl, id){
     try {
-        if (devices_check[id] === false) {
-            throw new Error("turn off device")
-        }
+        
         apiUrl += id;
         const response = await fetch(apiUrl);
         if(!response.ok){
@@ -140,7 +145,7 @@ async function getData(apiUrl, id){
 
         if(yArray.length > 0){
             if(Date(devices[devices.length - 1].timeStamp) === Date(yArray[yArray.length - 1])){
-                console.warn(yArray.length);
+                //console.warn(yArray.length);
                 return null;
             }
             return devices;
@@ -187,8 +192,4 @@ async function getData(apiUrl, id){
         resetTable();
     }
 }
-function sendApiRequest(apiUrl, id) {
-    getData(apiUrl, id).finally(() => {
-        setTimeout(() => sendApiRequest(apiUrl, id), timeIntervals);
-    });
-}
+
