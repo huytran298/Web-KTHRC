@@ -1,0 +1,22 @@
+{
+  "name": "serverapi",
+  "version": "1.0.0",
+  "description": "used to fetch cps data from a geiger counter",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "npx jest"
+  },
+  "author": "botbien",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}
