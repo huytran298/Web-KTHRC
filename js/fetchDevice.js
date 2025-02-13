@@ -145,7 +145,7 @@ async function getData(apiUrl, id){
 
         if(yArray.length > 0){
             if(Date(devices[devices.length - 1].timeStamp) === Date(yArray[yArray.length - 1])){
-                //console.warn(yArray.length);
+                console.warn(yArray.length);
                 return null;
             }
             return devices;
@@ -172,8 +172,14 @@ async function getData(apiUrl, id){
         }];
         // Define Layout
         const layout = {
-            xaxis: {range: [40, 160], title: "Time"},
-            yaxis: {range: [5, 16], title: "uSv"},  
+            xaxis: {
+                autorange: true, 
+                title: "Time"
+            },
+            yaxis: {
+                autorange: true,
+                title: "uSv"
+            },  
             
             title: "Data table",
             paper_bgcolor: 'rgba(0,0,0,0)',
