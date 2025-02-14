@@ -35,7 +35,7 @@ async function fecthDevice(apiUrl) {
             
             listItem.onclick = (event) => {
                 event.preventDefault(); // Ngăn chặn điều hướng mặc định
-                getDevice('http://localhost:5000/device?deviceID=', device.deviceID);
+                getDevice('http://192.168.1.128:5000/device?deviceID=', device.deviceID);
             };
             const link = document.createElement("a");
             
@@ -86,11 +86,11 @@ async function getDevice(apiUrl, id){
         }
         devices_intervals = setInterval(() => {
             //console.log("update Data");
-            getData('http://localhost:5000/record?deviceID=', id);
+            getData('http://192.168.1.128:5000/record?deviceID=', id);
         }, timeIntervals);
         
-        //sendApiRequest('http://localhost:5000/record?deviceID=', id);
-        //setTimeout(() => getData('http://localhost:5000/record?deviceID=', id), timeIntervals);
+        //sendApiRequest('http://192.168.1.128:5000/record?deviceID=', id);
+        //setTimeout(() => getData('http://192.168.1.128:5000/record?deviceID=', id), timeIntervals);
 
 
     } catch(error){
@@ -142,11 +142,17 @@ async function getData(apiUrl, id){
         }
         
         const devices = Array.isArray(data) ? data : [data];
-
-        if(yArray.length > 0){
-            if(Date(devices[devices.length - 1].timeStamp) === Date(yArray[yArray.length - 1])){
-                console.warn(yArray.length);
+        console.log(devices.length);
+        if(xArray.length > 0){
+            let num = parseInt(devices[devices.length - 1].timeStamp);
+            const date = new Date(num * 1000);
+            if(date.getTime() === xArray[xArray.length - 1].getTime()){
+                console.warn(date, xArray[xArray.length - 1]);
                 return null;
+            }else {
+                console.warn("data new");
+                console.warn(date, xArray[xArray.length - 1]);
+                //return null;
             }
             //return devices;
         }
@@ -154,12 +160,12 @@ async function getData(apiUrl, id){
             const myUnixTimestamp = device.timeStamp; // start with a Unix timestamp
 
             const myDate = new Date(myUnixTimestamp * 1000); // convert timestamp to milliseconds and construct Date object
-            if(yArray.length > 0 && Date(yArray[yArray.length - 1]) > myDate){
-                console.error(myDate, yArray[yArray.length - 1]);
+            if(xArray.length > 0 && xArray[xArray.length - 1] >= myDate){
+                //console.error(myDate, xArray[xArray.length - 1]);
                 //return null;
                 
             }else {
-                    
+                console.log("added new data") ;
                 xArray.push(myDate); 
                 yArray.push(parseInt(device.Cps).toString());
             }
