@@ -1,6 +1,6 @@
 let xArray = [];
 let yArray = [];
-const timeIntervals = 500;
+const timeIntervals = 3000;
 
 let devices_intervals = undefined;
 async function fecthDevice(apiUrl) {
@@ -85,7 +85,7 @@ async function getDevice(apiUrl, id){
         
         }
         devices_intervals = setInterval(() => {
-            console.log("update Data");
+            //console.log("update Data");
             getData('http://localhost:5000/record?deviceID=', id);
         }, timeIntervals);
         
@@ -148,17 +148,21 @@ async function getData(apiUrl, id){
                 console.warn(yArray.length);
                 return null;
             }
-            return devices;
+            //return devices;
         }
         devices.forEach(device => {
             const myUnixTimestamp = device.timeStamp; // start with a Unix timestamp
 
             const myDate = new Date(myUnixTimestamp * 1000); // convert timestamp to milliseconds and construct Date object
             if(yArray.length > 0 && Date(yArray[yArray.length - 1]) > myDate){
-                return;
+                console.error(myDate, yArray[yArray.length - 1]);
+                //return null;
+                
+            }else {
+                    
+                xArray.push(myDate); 
+                yArray.push(parseInt(device.Cps).toString());
             }
-            xArray.push(myDate); 
-            yArray.push(parseInt(device.Cps).toString());
         });
         const dataDevice = [{
             x:xArray,
@@ -188,14 +192,11 @@ async function getData(apiUrl, id){
         
         // Display using Plotly
         Plotly.newPlot("myPlot", dataDevice, layout,  {scrollZoom: true});
-
         console.log("Fetched devices:", devices);
-        return data;
+        //return data;
         
     }catch(error){
         console.error("Error fetching data: ", error);
-        console.error(apiUrl);
-        resetTable();
     }
 }
 

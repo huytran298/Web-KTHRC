@@ -12,7 +12,39 @@
   <h2 class="visually-hidden">Title for screen readers</h2>
   <a class="visually-hidden-focusable" href="#content">Skip to main content</a>
   <div class="visually-hidden-focusable">A container with a <a href="#">focusable element</a>.</div>
-  Sao k có gì v
+  <a id = "status">heee</a>
+  
 </body>
+<script>
 
+  function listen(){
+    
+      const api = 'http://localhost:5000/record?deviceID=6';
+      
+      
+      setInterval(function() {
+        fetch(api).then(response => {
+        if(!response.ok){
+        console.error('Http err :', response.error);
+        return null;
+        }
+        return response.json();
+        }).then(data => {
+          if(data.error){
+            console.error('Data err ', data.error);
+            return null;
+          }
+          
+          const devices = Array.isArray(data) ? data : [data];
+          console.log(data);
+          document.getElementById("status").textContent = data.length;
+        }).catch (function (error){
+          console.error("Error fetching data : ", error);
+        });
+      }, 2000);
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    listen();
+  });
+</script>
 </html>
