@@ -2,47 +2,26 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible">
-    <meta name = "viewport" content = "width = device - width, initial-scale = 1.0">
+    <meta name = "viewport" content = "initial-scale = 1.0">
       
     <link href="/css/custom.css" rel="stylesheet">
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
 </head>
 <body>
-  <h2 class="visually-hidden">Title for screen readers</h2>
-  <a class="visually-hidden-focusable" href="#content">Skip to main content</a>
-  <div class="visually-hidden-focusable">A container with a <a href="#">focusable element</a>.</div>
-  <a id = "status">heee</a>
+  <div class="container text-center" style="height: 400px;">
+    <div class="row">
+      <p class="col align-self-start">
+        One of three columns
+      </p>
+      <p class="col align-self-center">
+        One of three columns
+      </p>
+      <p class="col align-end">
+        One of three columns
+      </p>
+    </div>
+  </div>
   
 </body>
-<script>
-
-  function listen(){
-    
-      const api = 'http://localhost:5000/record?deviceID=6';
-      
-      
-      setInterval(function() {
-        fetch(api).then(response => {
-        if(!response.ok){
-        console.error('Http err :', response.error);
-        return null;
-        }
-        return response.json();
-        }).then(data => {
-          if(data.error){
-            console.error('Data err ', data.error);
-            return null;
-          }
-          
-          const devices = Array.isArray(data) ? data : [data];
-          console.log(data);
-          document.getElementById("status").textContent = data.length;
-        }).catch (function (error){
-          console.error("Error fetching data : ", error);
-        });
-      }, 2000);
-  }
-  listen();
-</script>
 </html>
