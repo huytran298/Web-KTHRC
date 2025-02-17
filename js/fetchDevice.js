@@ -1,7 +1,7 @@
 let xArray = [];
 let yArray = [];
 const timeIntervals = 3000;
-const endpoint = 'localhost:5000';
+const endpoint = '192.168.0.108:5000';
 let devices_intervals = undefined;
 async function fecthDevice(apiUrl) {
     try{
@@ -188,7 +188,7 @@ async function getData(apiUrl, id){
             },
             yaxis: {
                 autorange: true,
-                title: "uSv"
+                title: "CPS"
             },  
             
             title: "Data table",
