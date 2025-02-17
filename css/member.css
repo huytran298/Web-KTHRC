@@ -15,7 +15,6 @@
     src: url(/font/Bai_Jamjuree/BaiJamjuree-Regular.ttf);
 }
 .member {
-    max-height: 150px;
     transition: 0.3s;
 }
 .member:hover{
@@ -36,16 +35,20 @@
     
 }
 .avatar{
-    max-width: 100%;
     width: 100%;
+    height: auto;
     border-radius: 20px;
 }
 .name::before {
-    content: 'Họ và tên : ';
+    content: 'Full name: ';
 }
 .quote::before {
     
     content: 'Slogan : ';
+}
+.year::before {
+    
+    content: 'School year: ';
 }
 .quote{
     font-family: Italic;
