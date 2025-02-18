@@ -1,7 +1,7 @@
 let xArray = [];
 let yArray = [];
 const timeIntervals = 3000;
-
+const endpoint = '192.168.0.108:5000';
 let devices_intervals = undefined;
 async function fecthDevice(apiUrl) {
     try{
@@ -35,7 +35,7 @@ async function fecthDevice(apiUrl) {
             
             listItem.onclick = (event) => {
                 event.preventDefault(); // Ngăn chặn điều hướng mặc định
-                getDevice('http://192.168.1.128:5000/device?deviceID=', device.deviceID);
+                getDevice(`http://${endpoint}/device?deviceID=`, device.deviceID);
             };
             const link = document.createElement("a");
             
@@ -86,7 +86,7 @@ async function getDevice(apiUrl, id){
         }
         devices_intervals = setInterval(() => {
             //console.log("update Data");
-            getData('http://192.168.1.128:5000/record?deviceID=', id);
+            getData(`http://${endpoint}/record?deviceID=`, id);
         }, timeIntervals);
         
         //sendApiRequest('http://192.168.1.128:5000/record?deviceID=', id);
@@ -188,7 +188,7 @@ async function getData(apiUrl, id){
             },
             yaxis: {
                 autorange: true,
-                title: "uSv"
+                title: "CPS"
             },  
             
             title: "Data table",
@@ -206,3 +206,5 @@ async function getData(apiUrl, id){
     }
 }
 
+
+fecthDevice(`http://${endpoint}/device`);
