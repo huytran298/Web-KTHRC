@@ -1,7 +1,7 @@
 let xArray = [];
 let yArray = [];
 const timeIntervals = 3000;
-const endpoint = '192.168.0.108:5000';
+const endpoint = 'https://api.rabbitcave.com.vn';
 let devices_intervals = undefined;
 async function fecthDevice(apiUrl) {
     try{
@@ -35,7 +35,7 @@ async function fecthDevice(apiUrl) {
             
             listItem.onclick = (event) => {
                 event.preventDefault(); // Ngăn chặn điều hướng mặc định
-                getDevice(`http://${endpoint}/device?deviceID=`, device.deviceID);
+                getDevice(`${endpoint}/device?deviceID=`, device.deviceID);
             };
             const link = document.createElement("a");
             
@@ -86,11 +86,11 @@ async function getDevice(apiUrl, id){
         }
         devices_intervals = setInterval(() => {
             //console.log("update Data");
-            getData(`http://${endpoint}/record?deviceID=`, id);
+            getData(`${endpoint}/record?deviceID=`, id);
         }, timeIntervals);
         
-        //sendApiRequest('http://192.168.1.128:5000/record?deviceID=', id);
-        //setTimeout(() => getData('http://192.168.1.128:5000/record?deviceID=', id), timeIntervals);
+        //sendApiRequest('192.168.1.128:5000/record?deviceID=', id);
+        //setTimeout(() => getData('192.168.1.128:5000/record?deviceID=', id), timeIntervals);
 
 
     } catch(error){
@@ -207,4 +207,4 @@ async function getData(apiUrl, id){
 }
 
 
-fecthDevice(`http://${endpoint}/device`);
+fecthDevice(`${endpoint}/device`);
