@@ -8,7 +8,6 @@
     <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" ></script>
     
     <meta charset="UTF-8">
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     <title>Rabbit Cave</title>
     <link rel="icon" href = "img/kthLOGO.ico" type="image/x-icon" />
 </head>
@@ -17,13 +16,143 @@
     <div id = "logo">
         <a href = "./index.html"><img src="./img/kth.svg" alt="Rabbit Cave"></a>
     </div>
-    <div id = "list">
-        <li><a href = "/index.html" class="text-primary">Home</a></li>
-        <li><a href = "./product.html" class="text-primary">Product</a></li>
-        <li><a href="/member.html" class="text-primary">Member</a></li>
-        <li><a href = "/data.html" class="text-primary">Data</a></li>
-    </div>
-</div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div id="list" class="d-none d-lg-block">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/index.html" class="nav-link text-light">Home</a></li>
+                <li class="nav-item"><a href="./product.html" class="nav-link text-light">Product</a></li>
+                <li class="nav-item"><a href="/member.html" class="nav-link text-light">Member</a></li>
+                <li class="nav-item"><a href="/data.html" class="nav-link text-light">Data</a></li>
+            </ul>
+        </div>
+        <button class="navbar-toggler ms-auto mb-2 mb-lg-0 d-lg-none mobile-menu-button" type="button" id="menu-toggle"> 
+                ☰ Menu
+            </button>
+
+        <div class="collapse navbar-collapse d-lg-none custom-menu-container" id="navbarNav">
+            <ul class="dropdown-menu ms-auto mb-2 mb-lg-0 mobile-only custom-menu">
+                <li class="nav-item"><a href="/index.html" class="nav-link text-light">Home</a></li>
+                <li class="nav-item"><a href="./product.html" class="nav-link text-light">Product</a></li>
+                <li class="nav-item"><a href="/member.html" class="nav-link text-light">Member</a></li>
+                <li class="nav-item"><a href="/data.html" class="nav-link text-light">Data</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+    document.getElementById("menu-toggle").addEventListener("click", function() {
+        document.getElementById("navbarNav").classList.toggle("show");
+    });
+    </script>
+    
+    <!-- Updated Dark Theme CSS -->
+    <style>
+    /* Use your existing fonts */
+    @font-face {
+        font-family: Regular;
+        src: url(/font/Bai_Jamjuree/BaiJamjuree-Regular.ttf);
+    }
+    @font-face {
+        font-family: Thin;
+        src: url(../font/Bai_Jamjuree/BaiJamjuree-Light.ttf);
+    }
+    @font-face {
+        font-family: Bold;
+        src: url(/font/Bai_Jamjuree/BaiJamjuree-Regular.ttf);
+    }
+    
+    /* Dark background for navbar */
+    .navbar {
+        background-color: #222 !important;
+        border-bottom: 2px solid #444;
+    }
+    
+    /* Navbar links */
+    .navbar-nav .nav-link {
+        font-family: Regular;
+        font-size: 16px;
+        color: #fff !important;
+        transition: color 0.3s ease-in-out;
+    }
+    
+    /* Hover effect */
+    .navbar-nav .nav-link:hover {
+        color: #17a2b8 !important; /* Bootstrap primary color */
+    }
+    
+    /* Mobile Menu Button */
+    .mobile-menu-button {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        font-family: Bold;
+        color: #fff;
+    }
+    
+    /* Hide dropdown menu by default */
+    .dropdown-menu {
+        display: none;
+        list-style: none;
+        padding: 10px 0;
+        background: #333;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+    }
+    
+    /* Show dropdown menu when toggled */
+    .navbar-collapse.show .dropdown-menu {
+        display: block;
+    }
+    
+    /* Mobile dropdown links */
+    .dropdown-menu .nav-link {
+        color: #fff !important;
+        padding: 10px 20px;
+        display: block;
+        transition: background 0.3s ease-in-out;
+    }
+    
+    .dropdown-menu .nav-link:hover {
+        background: #444;
+    }
+    
+    /* Hide mobile menu button and dropdown on large screens */
+    .mobile-only {
+        display: none;
+    }
+    .custom-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #333; /* Dark theme */
+    border-radius: 5px;
+    padding: 10px;
+    width: 200px; /* Adjust as needed */
+}
+
+.custom-menu .nav-item {
+    text-align: right; /* Align text inside items */
+}
+
+    
+    /* Responsive Design - Show Mobile Menu */
+    @media (max-width: 991px) {
+        .mobile-menu-button {
+            display: block;
+        }
+        .mobile-only {
+            display: block;
+        }
+    }
+    </style>
+    
+    
 <div id = "main" class="container-fluid">
     
     <div class = "crop container-fluid row">
