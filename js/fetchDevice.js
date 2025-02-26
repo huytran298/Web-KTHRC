@@ -39,7 +39,7 @@ async function fecthDevice(apiUrl) {
             };
             const link = document.createElement("a");
             
-            link.textContent = `${device.deviceName}`;
+            link.textContent = `Device ${device.deviceID}`;
             
             listItem.appendChild(link);
             outputList.appendChild(listItem);
