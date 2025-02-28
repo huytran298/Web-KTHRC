@@ -1,7 +1,7 @@
 let xArray = [];
 let yArray = [];
 const timeIntervals = 3000;
-const endpoint = 'http://localhost:5000';
+const endpoint = 'https://api.rabbitcave.com.vn';
 let devices_intervals = undefined;
 async function fecthDevice(apiUrl) {
     try{
