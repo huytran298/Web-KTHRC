@@ -54,12 +54,29 @@
 <div id = "graphData" class="bg-primary border border-secondary border-2">
     <div id="myPlot" style="width:100%;"></div>
 </div>
-<div class="btnSave d-grid gap-2 d-md-flex justify-content-md-end">
-    <button style="border-radius: 20px;" class="btn btn-secondary border border-primary me-md-2" type="button">Save as csv</button>
-    <button style="border-radius: 20px;" class="btn btn-secondary border border-primary" type="button">Save as xlsx</button>
-  </div>
+<div class="export-container text-center mt-3">
+    <label for="startTime" class="text-white">Start Time:</label>
+    <input type="datetime-local" id="startTime" class="form-control d-inline-block w-auto">
+    
+    <label for="endTime" class="text-white">End Time:</label>
+    <input type="datetime-local" id="endTime" class="form-control d-inline-block w-auto">
+    <div class="export-buttons text-center mt-3">
+        <button class="btn btn-primary" onclick="fetchAndExportData('csv')">📥 Export CSV</button>
+        <button class="btn btn-success" onclick="fetchAndExportData('xlsx')">📥 Export XLSX</button>
+    </div>
+</div>
 </body>
+<div class="d-flex justify-content-center mt-3">
+    <button id="showAllDevicesBtn" class="btn btn-warning">📊 Show All Devices</button>
+</div>
 
-
+<div id="allDevicesCharts" class="container mt-4">
+    <h4 class="device-title">📡 All Device Data</h4>
+    <div id="deviceChartGrid"></div>
+    <div class="export-buttons text-center mt-3">
+        <button class="btn btn-primary" onclick="exportAllDevicesData('csv')">📥 Export CSV</button>
+        <button class="btn btn-success" onclick="exportAllDevicesData('xlsx')">📥 Export XLSX</button>
+    </div>
+</div>
 
 </html>
