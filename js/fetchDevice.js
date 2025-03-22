@@ -1,94 +1,100 @@
+// Arrays to store x and y data points
 let xArray = [];
 let yArray = [];
+
+// Time interval for refreshing data
 const timeIntervals = 3000;
+
+// API endpoint
 const endpoint = 'https://api.rabbitcave.com.vn';
+
+// Variable to store interval ID for refreshing data
 let devices_intervals = undefined;
+
+// Function to fetch device data from the API
 async function fecthDevice(apiUrl) {
-    try{
+    try {
         const response = await fetch(apiUrl);
-        if(!response.ok){
+        if (!response.ok) {
             throw new Error('Http error! Status : ${response.status}$');
         }
         const data = await response.json();
-        
+
         const outputList = document.getElementById("listDevice");
         outputList.innerHTML = "";
-        if(data.error){
+
+        if (data.error) {
             console.warn("API Error:", data.error);
             const listItem = document.createElement("li");
             listItem.classList.add("dropdown-item");
 
-
             const link = document.createElement("a");
-            
-
             link.textContent = "Không có thiết bị";
             listItem.appendChild(link);
             outputList.appendChild(listItem);
             return null;
         }
+
         const devices = Array.isArray(data) ? data : [data];
         devices.forEach(device => {
-            
             const listItem = document.createElement("li");
-            listItem.classList.add("dropdown-item"); // Gán class cho mỗi thiết bị
-            
+            listItem.classList.add("dropdown-item"); // Assign class to each device
+
             listItem.onclick = (event) => {
-                event.preventDefault(); // Ngăn chặn điều hướng mặc định
+                event.preventDefault(); // Prevent default navigation
                 getDevice(`${endpoint}/device?deviceID=`, device.deviceID);
             };
+
             const link = document.createElement("a");
-            
             link.textContent = `Device ${device.deviceID}`;
-            
             listItem.appendChild(link);
             outputList.appendChild(listItem);
         });
+
         console.log("Fetched devices:", data);
         return data;
-    }
-    catch (error) {
-       console.error("Error fetching data:", error);
-       console.error(apiUrl);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        console.error(apiUrl);
     }
 }
 
-
-async function getDevice(apiUrl, id){
+// Function to get device data by ID
+async function getDevice(apiUrl, id) {
     CURRENT_SELECTED_DEVICE_ID = id;
     try {
         apiUrl += id;
         const response = await fetch(apiUrl);
-        if(!response.ok){
+        if (!response.ok) {
             throw new Error('Http error! Status : ${response.status}$');
         }
         const data = await response.json();
-        if(data.error){
+        if (data.error) {
             console.warn("API Error:", data.error);
             return null;
         }
-        //set data null
+
+        // Clear previous data
         xArray = [];
         yArray = [];
-        
+
         const devices = Array.isArray(data) ? data : [data];
         devices.forEach(device => {
             let num = device.deviceID;
             document.getElementById("infoId").textContent = `${num.toString()}`;
             document.getElementById("infoName").textContent = `${device.deviceName}`;
             document.getElementById("infoType").textContent = `${device.deviceType}`;
-            
         });
+
         console.log("Fetched devices:", devices);
         getData(`${endpoint}/record?deviceID=`, id);
-
-
-    } catch(error){
+    } catch (error) {
         console.error("Error fetching data: ", error);
         console.error(apiUrl);
     }
 }
 
+// Function to fetch all devices and display charts
 async function fetchAllDevicesWithCharts(apiUrl) {
     try {
         const response = await fetch(apiUrl);
@@ -96,7 +102,7 @@ async function fetchAllDevicesWithCharts(apiUrl) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        const deviceContainer = document.getElementById("deviceChartGrid"); // ✅ Change to correct container
+        const deviceContainer = document.getElementById("deviceChartGrid"); // Change to correct container
         deviceContainer.innerHTML = ""; // Clear previous data
 
         if (data.error) {
@@ -126,17 +132,17 @@ async function fetchAllDevicesWithCharts(apiUrl) {
             chartDiv.style.height = "300px";
             chartWrapper.appendChild(chartDiv);
 
-            deviceContainer.appendChild(chartWrapper); // ✅ Append to #deviceChartGrid
+            deviceContainer.appendChild(chartWrapper); // Append to #deviceChartGrid
 
             // Fetch and plot data for each device
             await plotDeviceData(`${endpoint}/record?deviceID=`, device.deviceID, chartDiv.id);
         }
-
     } catch (error) {
         console.error("Error fetching all devices with charts:", error);
     }
 }
 
+// Function to plot device data on a chart
 async function plotDeviceData(apiUrl, id, chartId) {
     try {
         apiUrl += id;
@@ -166,7 +172,7 @@ async function plotDeviceData(apiUrl, id, chartId) {
             y: yArray,
             type: 'scatter',
             mode: 'lines',  // Ensures it's a line chart
-            line: { color: 'white', width: 2 } // ✅ Change line color to white
+            line: { color: 'white', width: 2 } // Change line color to white
         }];
 
         const layout = {
@@ -179,51 +185,53 @@ async function plotDeviceData(apiUrl, id, chartId) {
 
         // Display chart using Plotly
         Plotly.newPlot(chartId, dataDevice, layout, { scrollZoom: true });
-
     } catch (error) {
         console.error(`Error fetching data for device ${id}:`, error);
     }
 }
+
+// Event listener for DOM content loaded
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("showAllDevicesBtn").addEventListener("click", () => {
         fetchAllDevicesWithCharts(`${endpoint}/device`);
     });
 });
-async function getData(apiUrl, id){
+
+// Function to fetch data and update chart
+async function getData(apiUrl, id) {
     try {
-        
         apiUrl += id;
         const response = await fetch(apiUrl);
-        if(!response.ok){
+        if (!response.ok) {
             throw new Error('Http error! Status : ${response.status}$');
         }
         const data = await response.json();
-        if(data.error){
+        if (data.error) {
             console.warn("API Error:", data.error);
             return null;
         }
-        
+
         const devices = Array.isArray(data) ? data : [data];
         devices.forEach(device => {
             const myUnixTimestamp = device.timeStamp; // start with a Unix timestamp
             const myDate = new Date(myUnixTimestamp * 1000); // convert timestamp to milliseconds and construct Date object
-            xArray.push(myDate); 
+            xArray.push(myDate);
             yArray.push(parseInt(device.Cps).toString());
         });
+
         const dataDevice = [{
-            x:xArray,
-            y:yArray,
+            x: xArray,
+            y: yArray,
             type: 'scatter',
             marker: {
                 color: 'black',
-                    //background color of the chart container space
-                    //background color of plot area
             }
         }];
+
         // Define Layout
         const layout = {
             xaxis: {
-                autorange: true, 
+                autorange: true,
                 title: "Time",
                 gridcolor: 'rgb(255, 255, 255)',
             },
@@ -231,35 +239,29 @@ async function getData(apiUrl, id){
                 autorange: true,
                 title: "CPS",
                 gridcolor: 'rgb(255, 255, 255)',
-            },  
-            
+            },
             title: "Data table",
             paper_bgcolor: '#00000000',
-            plot_bgcolor: '#00000000', 
+            plot_bgcolor: '#00000000',
         };
-        
+
         // Display using Plotly
-        Plotly.newPlot("myPlot", dataDevice, layout,  {scrollZoom: true});
+        Plotly.newPlot("myPlot", dataDevice, layout, { scrollZoom: true });
         console.log("Fetched devices:", devices);
-        //return data;
-        //call function then set time to reapeatlly call api to refresh table
-        
-        if(devices_intervals !== undefined){
-            
+
+        // Set interval to refresh data
+        if (devices_intervals !== undefined) {
             clearInterval(devices_intervals);
-        
         }
         devices_intervals = setInterval(() => {
-            //console.log("update Data");
             listenForDevice(`${endpoint}/record?deviceID=`, id);
         }, timeIntervals);
-        
-        //sendApiRequest('192.168.1.128:5000/record?deviceID=', id);
-        //setTimeout(() => getData('192.168.1.128:5000/record?deviceID=', id), timeIntervals);
-    }catch(error){
+    } catch (error) {
         console.error("Error fetching data: ", error);
     }
 }
+
+// Function to export data to CSV
 function exportToCSV(data, filename = "device_data.csv") {
     const csvRows = ["Time,CPS"];
     data.forEach(row => {
@@ -278,6 +280,7 @@ function exportToCSV(data, filename = "device_data.csv") {
     document.body.removeChild(link);
 }
 
+// Function to export data to XLSX
 async function exportToXLSX(data, filename = "device_data.xlsx") {
     if (typeof XLSX === "undefined") {
         const script = document.createElement("script");
@@ -302,7 +305,7 @@ async function exportToXLSX(data, filename = "device_data.xlsx") {
     XLSX.writeFile(wb, filename);
 }
 
-
+// Event listener for DOM content loaded
 document.addEventListener("DOMContentLoaded", function () {
     const exportBtn = document.getElementById("exportBtn");
     if (exportBtn) {
@@ -312,6 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// Function to fetch and export data in the selected format
 async function fetchAndExportData(format) {
     if (!CURRENT_SELECTED_DEVICE_ID) {
         alert("Please select a device before exporting data.");
@@ -327,7 +331,7 @@ async function fetchAndExportData(format) {
     }
 
     const apiUrl = `${endpoint}/record?deviceID=${CURRENT_SELECTED_DEVICE_ID}&startTime=${new Date(startTime).getTime() / 1000}&endTime=${new Date(endTime).getTime() / 1000}`;
-    
+
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error("Failed to fetch data");
@@ -349,61 +353,57 @@ async function fetchAndExportData(format) {
     }
 }
 
-async function listenForDevice(apiUrl, id){
+// Function to listen for device data updates
+async function listenForDevice(apiUrl, id) {
     try {
         apiUrl += id;
         const response = await fetch(apiUrl);
-        if(!response.ok){
+        if (!response.ok) {
             throw new Error('Http error! Status : ${response.status}$');
         }
         const data = await response.json();
-        if(data.error){
+        if (data.error) {
             console.warn("API Error:", data.error);
             return null;
         }
-        
+
         const devices = Array.isArray(data) ? data : [data];
         console.log(devices.length);
-        if(xArray.length > 0){  
+        if (xArray.length > 0) {
             let num = parseInt(devices[devices.length - 1].timeStamp);
             const date = new Date(num * 1000);
-            if(date.getTime() === xArray[xArray.length - 1].getTime()){
+            if (date.getTime() === xArray[xArray.length - 1].getTime()) {
                 console.warn("data old");
                 return null;
-            }else {
+            } else {
                 console.warn("data new");
                 console.warn(date, xArray[xArray.length - 1]);
-                //return null;
             }
-            //return devices;
         }
         devices.forEach(device => {
             const myUnixTimestamp = device.timeStamp; // start with a Unix timestamp
-
             const myDate = new Date(myUnixTimestamp * 1000); // convert timestamp to milliseconds and construct Date object
-            if(xArray.length > 0 && xArray[xArray.length - 1] >= myDate){
-                //console.error(myDate, xArray[xArray.length - 1]);
-                //return null;
-                
-            }else {
-                console.log("added new data") ;
-                xArray.push(myDate); 
+            if (xArray.length > 0 && xArray[xArray.length - 1] >= myDate) {
+                // Do nothing if data is old
+            } else {
+                console.log("added new data");
+                xArray.push(myDate);
                 yArray.push(parseInt(device.Cps).toString());
             }
         });
-        
+
         // Display using Plotly
         Plotly.redraw("myPlot");
         console.log("Fetched devices:", devices);
-        //return data;
-        
-    }catch(error){
+    } catch (error) {
         console.error("Error fetching data: ", error);
     }
 }
 
+// Initial fetch of device data
 fecthDevice(`${endpoint}/device`);
 
+// Function to export all devices data in the selected format
 async function exportAllDevicesData(format) {
     try {
         const startTime = document.getElementById("startTime").value;
@@ -458,6 +458,7 @@ async function exportAllDevicesData(format) {
     }
 }
 
+// Function to export all devices data to CSV
 function exportAllDevicesToCSV(allDeviceData) {
     let csvRows = [];
 
@@ -499,6 +500,7 @@ function exportAllDevicesToCSV(allDeviceData) {
     document.body.removeChild(link);
 }
 
+// Function to export all devices data to XLSX
 async function exportAllDevicesToXLSX(allDeviceData) {
     if (typeof XLSX === "undefined") {
         const script = document.createElement("script");
