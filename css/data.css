@@ -90,3 +90,48 @@
 #myPlot{
     font-family: Regular;
 }
+#allDevicesCharts {
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 20px;
+    border: 3px solid #ffffff;
+    background-color: rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 95%;
+}
+
+#deviceChartGrid {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center; 
+    align-items: stretch; 
+    gap: 15px;
+    width: 100%;
+}
+
+.device-chart {
+    flex: 1 1 calc(33.33% - 20px); 
+    max-width: 400px; 
+    min-width: 300px; 
+    border-radius: 20px;
+    padding: 15px;
+    border: 3px solid #ffffff;
+    background-color: #2c3e50;
+    transition: transform 0.3s ease-in-out;
+}
+
+.device-chart:hover {
+    transform: scale(1.02);
+}
+
+@media (max-width: 1024px) {
+    .device-chart {
+        flex: 1 1 calc(50% - 20px); 
+    }
+}
+
+@media (max-width: 768px) {
+    .device-chart {
+        flex: 1 1 100%; 
+    }
+}
