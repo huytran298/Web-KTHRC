@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<head>
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <meta charset="UTF-8">
+    <title>Rabbit Cave</title>
+    <link rel="icon" href="/img/kthLOGO.ico" type="image/x-icon" />
+
+    <style>
+        h3 {
+            color: lightblue;
+        }
+        table.table tbody td {
+            color: white;
+        }
+          .buy-now-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(135deg, #00bcd4, #2196f3);
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .buy-now-btn:hover {
+            background: linear-gradient(135deg, #2196f3, #00bcd4);
+            box-shadow: 0 6px 16px rgba(0, 150, 136, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .buy-now-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 6px rgba(0, 188, 212, 0.2);
+        }
+    </style>    
+</head>
+<body>
+    <div id="header">
+    <div id="logo">
+        <a href="/index.html"><img src="/img/kth.svg" alt="Rabbit Cave"></a>
+    </div>
+    <div id="list">
+        <li><a href="/index.html" class="text-primary">Home</a></li>
+        <li><a href="/product.html" class="text-primary">Product</a></li>
+        <li><a href="/member.html" class="text-primary">Member</a></li>
+        <li><a href="/data.html" class="text-primary">Data</a></li>
+    </div>
+</div><div class="row py-4">
+    <div class="col-12 col-md-5">
+        <img src="/img/index/scintillator.jpeg" class="img-fluid" alt="Scintillator Image">
+    </div>
+    <div class="col-12 col-md-7 d-flex flex-column align-items-start">
+        <p class="h1 fw-bold">Scintillator</p>
+        <p class="fs-5">
+            A detector for charged particles and gamma rays in which scintillations produced in a phosphor are detected and amplified by a photomultiplier, giving an electrical output signal.
+        </p>
+            <h1 style="color: azure;">19.99USD</h1> 
+            <h4 style="color: rgb(105, 116, 116);">499.000VND</h4> 
+                <a href="#" class="buy-now-btn">Don't buy</a>
+    </div>
+</div>
+<hr class="g-col-12" />
+
+<div class="row">
+    <div class="col-12">
+        <h2 class="fw-semibold text-primary">Technical Description</h2>
+        <p class="fs-6">Scintillators work by emitting small flashes of light when excited by incoming ionizing radiation. These flashes are usually too faint to detect directly, so they are amplified using photomultiplier tubes (PMTs) or silicon photomultipliers (SiPMs). The resulting electrical signal is proportional to the energy deposited by the radiation, allowing identification and quantification of the detected particles.</p>
+
+        <h3 class="mt-4">Core Components</h3>
+        <ul>
+            <li><strong>Scintillating Material:</strong> Converts ionizing radiation into visible light. Can be organic (plastic or liquid) or inorganic (e.g., NaI:Tl).</li>
+            <li><strong>Photomultiplier Tube (PMT):</strong> Amplifies the light signal by converting photons into electrons and multiplying them through dynodes.</li>
+            <li><strong>Optical Coupling:</strong> Material (gel or grease) ensuring efficient light transfer from scintillator to PMT.</li>
+            <li><strong>Shielding and Housing:</strong> Protects against external light and mechanical damage.</li>
+            <li><strong>Electronic Readout:</strong> Measures and processes electrical output signals from the PMT.</li>
+        </ul>
+
+        <h3 class="mt-4">Specifications</h3>
+        <table class="table table-bordered table-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Typical Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Scintillation Material</td><td>Plastic (not sure)</td></tr>
+                <tr><td>Light Yield</td><td>~4000 photons/MeV</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="mt-4">Detection Features</h3>
+        <ul>
+            <li><strong>Gamma ray sensitivity:</strong> Excellent for medium- and high-energy gamma detection.</li>
+            <li><strong>Fast response:</strong> Suitable for time-resolved and coincidence measurements.</li>
+            <li><strong>Energy discrimination:</strong> Based on pulse height proportional to deposited energy.</li>
+        </ul>
+
+        <h3 class="mt-4">Safety Notes</h3>
+        <ul>
+            <li>Handle PMTs carefully to avoid mechanical shock and exposure to light.</li>
+            <li>Some scintillators (like NaI:Tl) are hygroscopic and require sealed environments.</li>
+            <li>Follow radiation safety protocols when used with radioactive sources.</li>
+        </ul>
+
+        <h3 class="mt-4">Applications</h3>
+        <p>Scintillators are widely used in various scientific and industrial domains:</p>
+        <ul>
+            <li>Nuclear medicine (e.g., PET, SPECT)</li>
+            <li>High-energy and particle physics</li>
+            <li>Environmental radiation monitoring</li>
+            <li>Security and portal radiation detectors</li>
+        </ul>
+    </div>
+</div>
+</body>

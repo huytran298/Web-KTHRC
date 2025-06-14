@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<head>
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <meta charset="UTF-8">
+    <title>Rabbit Cave</title>
+    <link rel="icon" href="/img/kthLOGO.ico" type="image/x-icon" />
+    <style>
+        h3 {
+            color: lightblue;
+        }
+        table.table tbody td {
+            color: white;
+        }
+          .buy-now-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(135deg, #00bcd4, #2196f3);
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .buy-now-btn:hover {
+            background: linear-gradient(135deg, #2196f3, #00bcd4);
+            box-shadow: 0 6px 16px rgba(0, 150, 136, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .buy-now-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 6px rgba(0, 188, 212, 0.2);
+        }
+    </style>    
+</head>
+<body>
+<div id="header">
+    <div id="logo">
+        <a href="/index.html"><img src="/img/kth.svg" alt="Rabbit Cave"></a>
+    </div>
+    <div id="list">
+        <li><a href="/index.html" class="text-primary">Home</a></li>
+        <li><a href="/product.html" class="text-primary">Product</a></li>
+        <li><a href="/member.html" class="text-primary">Member</a></li>
+        <li><a href="/data.html" class="text-primary">Data</a></li>
+    </div>
+</div>
+
+<div id="main" class="container-fluid">
+    <div class="row py-4">
+        <div class="col-12 col-md-5">
+            <img src="/img/index/cloud.jpg" class="img-fluid" alt="Cloud Chamber Image">
+        </div>
+        <div class="col-12 col-md-7 d-flex flex-column align-items-start">
+            <p class="h1 fw-bold">Cloud Chamber</p>
+            <p class="fs-5">
+                A cloud chamber is a particle detector that enables the visualization of ionizing radiation through a supersaturated alcohol vapor environment.
+            </p>
+            <h1 style="color: azure;">199.99USD</h1> 
+            <h4 style="color: rgb(105, 116, 116);">4.999.000VND</h4> 
+                <a href="#" class="buy-now-btn">Don't buy</a>
+        </div>        
+    </div>
+    <hr class="g-col-12" />
+
+    <div class="row">
+        <div class="col-12">
+            <h2 class="fw-semibold text-primary">Technical Description</h2>
+            <p class="fs-6">The cloud chamber operates by allowing charged particles (such as alpha or beta radiation) to ionize vapor molecules as they pass through. A supersaturated vapor condenses around these ionization trails, forming visible tracks made of tiny droplets. The visualization is typically enhanced using side illumination.</p>
+
+            <h3 class="mt-4">Core Components</h3>
+            <ul>
+                <li><strong>Sealed Chamber:</strong> Transparent container preventing contamination.</li>
+                <li><strong>Alcohol Vapor:</strong> Supersaturated isopropyl or ethyl alcohol vapor as the detection medium.</li>
+                <li><strong>Cold Plate:</strong> Metal surface cooled to around -30°C to maintain supersaturation.</li>
+                <li><strong>Radiation Source:</strong> Optional radioactive sample to emit ionizing particles.</li>
+                <li><strong>Light Source:</strong> LED or laser light to illuminate the particle tracks.</li>
+                <li><strong>Insulation:</strong> Material to help maintain temperature stability.</li>
+            </ul>
+            <h3 class="mt-4">Specifications</h3>
+                <table class="table table-bordered table-sm">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Typical Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Vapor Type</td><td>Isopropyl alcohol (90–99%)</td></tr>
+                        <tr><td>Cold Plate Temperature</td><td>-26°C to -40°C</td></tr>
+                        <tr><td>Operating Pressure</td><td>Atmospheric</td></tr>
+                        <tr><td>Chamber Volume</td><td>1–5 liters</td></tr>
+                        <tr><td>Power Requirement</td><td>50–100W (Peltier or cooling system)</td></tr>
+                    </tbody>
+                </table>
+            <h3 class="mt-4">Types of Detected Radiation</h3>
+            <ul>
+                <li><strong>Alpha particles (α):</strong> Short, thick, straight tracks (e.g., from Americium-241).</li>
+                <li><strong>Beta particles (β):</strong> Long, thin, curved paths (e.g., from Strontium-90).</li>
+                <li><strong>Gamma rays (γ):</strong> Indirect detection via recoil electrons.</li>
+                <li><strong>Muons:</strong> Long, straight tracks from cosmic sources.</li>
+            </ul>
+
+            <h3 class="mt-4">Safety Notes</h3>
+            <ul>
+                <li>Ensure good ventilation due to flammable alcohol vapor.</li>
+                <li>Use only safe, legal radioactive sources or natural background radiation.</li>
+                <li>Handle cooling agents with care to avoid burns or frostbite.</li>
+            </ul>
+
+            <h3 class="mt-4">Applications</h3>
+            <p>Cloud chambers are widely used in:</p>
+            <ul>
+                <li>Physics education and radiation demonstrations</li>
+                <li>Cosmic ray visualization</li>
+                <li>Historical particle physics research</li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

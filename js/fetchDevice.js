@@ -305,6 +305,27 @@ async function exportToXLSX(data, filename = "device_data.xlsx") {
     XLSX.writeFile(wb, filename);
 }
 
+function exportToTSV(data, filename = "device_data.tsv") {
+    const tsvRows = ["Time\tCPS"];
+
+    data.forEach(row => {
+        const date = new Date(row.timeStamp * 1000);
+        const time = date.toISOString().replace("T", " ").substring(0, 19); // e.g., "2025-05-24 15:20:00"
+        tsvRows.push(`${time}\t${row.Cps}`);
+    });
+
+    const tsvString = tsvRows.join("\n");
+    const blob = new Blob([tsvString], { type: "text/tab-separated-values" });
+    const link = document.createElement("a");
+
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+
 // Event listener for DOM content loaded
 document.addEventListener("DOMContentLoaded", function () {
     const exportBtn = document.getElementById("exportBtn");
@@ -315,7 +336,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// Function to fetch and export data in the selected format
 async function fetchAndExportData(format) {
     if (!CURRENT_SELECTED_DEVICE_ID) {
         alert("Please select a device before exporting data.");
@@ -346,6 +366,8 @@ async function fetchAndExportData(format) {
             exportToCSV(data, `Device_${CURRENT_SELECTED_DEVICE_ID}_Data.csv`);
         } else if (format === "xlsx") {
             await exportToXLSX(data, `Device_${CURRENT_SELECTED_DEVICE_ID}_Data.xlsx`);
+        } else if (format === "tsv") {
+            await exportToTSV(data, `Device_${CURRENT_SELECTED_DEVICE_ID}_Data.tsv`);
         }
     } catch (error) {
         console.error("Export Error:", error);
@@ -353,7 +375,6 @@ async function fetchAndExportData(format) {
     }
 }
 
-// Function to listen for device data updates
 async function listenForDevice(apiUrl, id) {
     try {
         apiUrl += id;
@@ -451,6 +472,8 @@ async function exportAllDevicesData(format) {
             exportAllDevicesToCSV(allDeviceData);
         } else if (format === "xlsx") {
             exportAllDevicesToXLSX(allDeviceData);
+        } else if (format === "tsv") {
+            exportAllDevicesToTSV(allDeviceData);
         }
     } catch (error) {
         console.error("Export Error:", error);
@@ -545,4 +568,45 @@ async function exportAllDevicesToXLSX(allDeviceData) {
 
     // Export the Excel file
     XLSX.writeFile(wb, "All_Devices_Data.xlsx");
+}
+
+function exportAllDevicesToTSV(allDeviceData) {
+    let tsvRows = [];
+
+    // First row: Device names (with an empty column between each)
+    let headerRow = [];
+    for (let deviceID in allDeviceData) {
+        headerRow.push(allDeviceData[deviceID].name, ""); // Empty column
+    }
+    tsvRows.push(headerRow.join("\t"));
+
+    // Second row: Column headers (Time, CPS) for each device
+    let subHeaderRow = [];
+    for (let deviceID in allDeviceData) {
+        subHeaderRow.push("Time", "CPS", ""); // Empty column
+    }
+    tsvRows.push(subHeaderRow.join("\t"));
+
+    // Determine the max number of records across all devices
+    let maxRecords = Math.max(...Object.values(allDeviceData).map(d => d.records.length));
+
+    // Populate the data rows
+    for (let i = 0; i < maxRecords; i++) {
+        let row = [];
+        for (let deviceID in allDeviceData) {
+            let record = allDeviceData[deviceID].records[i] || { time: "", cps: "" };
+            row.push(record.time, record.cps, ""); // Empty column
+        }
+        tsvRows.push(row.join("\t"));
+    }
+
+    // Convert to TSV file and trigger download
+    const tsvString = tsvRows.join("\n");
+    const blob = new Blob([tsvString], { type: "text/tab-separated-values" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "All_Devices_Data.tsv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }

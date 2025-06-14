@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<head>
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <meta charset="UTF-8">
+    <title>Rabbit Cave</title>
+    <link rel="icon" href="/img/kthLOGO.ico" type="image/x-icon" />
+
+    <style>
+        h3 {
+            color: lightblue;
+        }
+        table.table tbody td {
+            color: white;
+        }
+          .buy-now-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(135deg, #00bcd4, #2196f3);
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .buy-now-btn:hover {
+            background: linear-gradient(135deg, #2196f3, #00bcd4);
+            box-shadow: 0 6px 16px rgba(0, 150, 136, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .buy-now-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 6px rgba(0, 188, 212, 0.2);
+        }
+    </style>    
+</head>
+<body>
+    <div id="header">
+    <div id="logo">
+        <a href="/index.html"><img src="/img/kth.svg" alt="Rabbit Cave"></a>
+    </div>
+    <div id="list">
+        <li><a href="/index.html" class="text-primary">Home</a></li>
+        <li><a href="/product.html" class="text-primary">Product</a></li>
+        <li><a href="/member.html" class="text-primary">Member</a></li>
+        <li><a href="/data.html" class="text-primary">Data</a></li>
+    </div>
+</div>
+<div class="row py-4">
+    <div class="col-12 col-md-5">
+        <img src="/img/index/geiger.jpg" class="img-fluid" alt="Geiger-Müller Counter Image">
+    </div>
+    <div class="col-12 col-md-7 d-flex flex-column align-items-start">
+        <p class="h1 fw-bold">Geiger-Müller Counter</p>
+        <p class="fs-5">
+            An electronic instrument for detecting and measuring ionizing radiation using a Geiger–Müller tube.
+        </p>
+          <h1 style="color: azure;">99.99USD</h1> 
+            <h4 style="color: rgb(105, 116, 116);">2.499.000VND</h4> 
+                <a href="#" class="buy-now-btn">Don't buy</a>
+        </div>      
+    </div>
+</div>
+<hr class="g-col-12" />
+
+<div class="row">
+    <div class="col-12">
+        <h2 class="fw-semibold text-primary">Technical Description</h2>
+        <p class="fs-6">The Geiger-Müller counter operates by detecting ionizing particles that enter a gas-filled tube and cause ionization. When a high-voltage potential is applied across the tube electrodes, ionizing radiation causes gas atoms to ionize, triggering a cascade that generates an electrical pulse. These pulses are counted and converted to a readable radiation level.</p>
+
+        <h3 class="mt-4">Core Components</h3>
+        <ul>
+            <li><strong>Geiger-Müller Tube:</strong> Central detection component containing low-pressure gas and electrodes.</li>
+            <li><strong>High Voltage Supply:</strong> Provides necessary potential (typically 400–900V) across the tube.</li>
+            <li><strong>Pulse Counter:</strong> Electronic circuit to register each detected event.</li>
+            <li><strong>Display Unit:</strong> Shows counts per second (CPS), counts per minute (CPM), or dose rate.</li>
+            <li><strong>Audio Output:</strong> Optional speaker or buzzer to emit a 'click' sound with each detection.</li>
+            <li><strong>Shielding:</strong> May include filters or casings to limit the type of detected radiation.</li>
+        </ul>
+
+        <h3 class="mt-4">Specifications</h3>
+        <table class="table table-bordered table-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Typical Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Detection Type</td><td>Alpha, Beta, Gamma</td></tr>
+                <tr><td>Operating Voltage</td><td>400–900V DC</td></tr>
+                <tr><td>Tube Fill Gas</td><td>Argon, Helium, Neon with halogen or organic quench gas</td></tr>
+                <tr><td>Display Output</td><td>CPM / µSv/h / mR/h</td></tr>
+                <tr><td>Response Time</td><td>0.1–1 sec</td></tr>
+                <tr><td>Power Supply</td><td>Battery (3–9V) or external power adapter</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="mt-4">Types of Detected Radiation</h3>
+        <ul>
+            <li><strong>Alpha particles (α):</strong> Detectable only with special thin-window tubes.</li>
+            <li><strong>Beta particles (β):</strong> Easily detected depending on shielding and energy.</li>
+            <li><strong>Gamma rays (γ):</strong> Detected indirectly via ionization events in gas.</li>
+        </ul>
+
+        <h3 class="mt-4">Safety Notes</h3>
+        <ul>
+            <li>Do not disassemble the high voltage section while powered on.</li>
+            <li>Use certified sources or natural radiation for safe measurement.</li>
+            <li>Be cautious of long-term exposure to high radiation levels during experiments.</li>
+        </ul>
+
+        <h3 class="mt-4">Applications</h3>
+        <p>Geiger-Müller counters are commonly used in:</p>
+        <ul>
+            <li>Environmental radiation monitoring</li>
+            <li>Nuclear industry and laboratory safety</li>
+            <li>Educational demonstrations and teaching tools</li>
+            <li>Radiological emergency response</li>
+        </ul>
+    </div>
+</div>
+</body>

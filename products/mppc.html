@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<head>
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <meta charset="UTF-8">
+    <title>Rabbit Cave</title>
+    <link rel="icon" href="/img/kthLOGO.ico" type="image/x-icon" />
+
+    <style>
+        h3 {
+            color: lightblue;
+        }
+        table.table tbody td {
+            color: white;
+        }
+          .buy-now-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(135deg, #00bcd4, #2196f3);
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .buy-now-btn:hover {
+            background: linear-gradient(135deg, #2196f3, #00bcd4);
+            box-shadow: 0 6px 16px rgba(0, 150, 136, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .buy-now-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 6px rgba(0, 188, 212, 0.2);
+        }
+    </style>    
+</head>
+<body>
+    <div id="header">
+    <div id="logo">
+        <a href="/index.html"><img src="/img/kth.svg" alt="Rabbit Cave"></a>
+    </div>
+    <div id="list">
+        <li><a href="/index.html" class="text-primary">Home</a></li>
+        <li><a href=".product.html" class="text-primary">Product</a></li>
+        <li><a href="/member.html" class="text-primary">Member</a></li>
+        <li><a href="/data.html" class="text-primary">Data</a></li>
+    </div>
+</div>
+<div class="row py-4">
+    <div class="col-12 col-md-5">
+        <img src="/img/index/mppc.jpeg" class="img-fluid" alt="MPPC Image">
+    </div>
+    <div class="col-12 col-md-7 d-flex flex-column align-items-start">
+        <p class="h1 fw-bold">Multi-Pixel Photon Counter (MPPC)</p>
+        <p class="fs-5">
+            A solid-state photodetector using multiple avalanche photodiode (APD) pixels in Geiger mode. Each pixel outputs a pulse at the same amplitude when detecting a photon.
+        </p>
+            <h1 style="color: azure;">Not available</h1> 
+            <h4 style="color: rgb(105, 116, 116);">Không có hàng</h4> 
+                <a href="#" class="buy-now-btn">Don't buy</a>
+    </div>
+</div>
+<hr class="g-col-12" /> 
+<div class="row">
+    <div class="col-12">
+        <h2 class="fw-semibold text-primary">Technical Description</h2>
+        <p class="fs-6">MPPCs consist of hundreds to thousands of APD microcells connected in parallel, each capable of detecting individual photons. When a photon strikes a pixel, the APD operates in Geiger mode, producing a standardized pulse. The sum of the triggered pixels produces an output proportional to the incident light intensity. The devices are compact, operate at low voltage, and have excellent photon detection efficiency.</p>
+
+        <h3 class="mt-4">Core Components</h3>
+        <ul>
+            <li><strong>APD Microcells:</strong> Thousands of avalanche photodiodes operating above breakdown voltage.</li>
+            <li><strong>Quenching Resistors:</strong> Integrated resistors to stop the avalanche after a detection event.</li>
+            <li><strong>Common Output Node:</strong> Summed signal output from all pixels.</li>
+            <li><strong>Protective Window:</strong> Optical interface that protects the device surface.</li>
+            <li><strong>Bias Voltage Supply:</strong> Provides stable high voltage for Geiger-mode operation.</li>
+        </ul>
+
+        <h3 class="mt-4">Specifications</h3>
+        <table class="table table-bordered table-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Typical Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Pixel Count</td><td>100 – 10,000 pixels</td></tr>
+                <tr><td>Operation Mode</td><td>Geiger Mode (Digital Photon Detection)</td></tr>
+                <tr><td>Gain</td><td>10⁵ – 10⁷</td></tr>
+                <tr><td>Photon Detection Efficiency (PDE)</td><td>20% – 50% (at peak wavelength)</td></tr>
+                <tr><td>Bias Voltage</td><td>25V – 70V</td></tr>
+                <tr><td>Response Time</td><td>&lt; 100 ns</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="mt-4">Detection Features</h3>
+        <ul>
+            <li><strong>Single-photon resolution:</strong> Able to resolve individual photons from low light sources.</li>
+            <li><strong>Fast timing:</strong> Suitable for time-of-flight (TOF) and coincidence measurements.</li>
+            <li><strong>Compact and durable:</strong> No vacuum tubes or fragile parts.</li>
+        </ul>
+
+        <h3 class="mt-4">Safety Notes</h3>
+        <ul>
+            <li>Ensure proper electrostatic discharge (ESD) precautions when handling.</li>
+            <li>Use low-noise power supplies for stable bias voltage.</li>
+            <li>Avoid overexposing to high-intensity light to prevent saturation or damage.</li>
+        </ul>
+
+        <h3 class="mt-4">Applications</h3>
+        <p>MPPCs are used in various precision photon detection scenarios, including:</p>
+        <ul>
+            <li>High-energy physics detectors</li>
+            <li>Medical imaging (e.g., PET scanners)</li>
+            <li>Biophotonics and fluorescence detection</li>
+            <li>LIDAR and time-of-flight systems</li>
+        </ul>
+    </div>
+</div>
+</body>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<head>
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <meta charset="UTF-8">
+    <title>Rabbit Cave</title>
+    <link rel="icon" href="/img/kthLOGO.ico" type="image/x-icon" />
+
+    <style>
+        h3 {
+            color: lightblue;
+        }
+        table.table tbody td {
+            color: white;
+        }
+          .buy-now-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(135deg, #00bcd4, #2196f3);
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .buy-now-btn:hover {
+            background: linear-gradient(135deg, #2196f3, #00bcd4);
+            box-shadow: 0 6px 16px rgba(0, 150, 136, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .buy-now-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 6px rgba(0, 188, 212, 0.2);
+        }
+    </style>    
+</head>
+<body>
+    <div id="header">
+    <div id="logo">
+        <a href="/index.html"><img src="/img/kth.svg" alt="Rabbit Cave"></a>
+    </div>
+    <div id="list">
+        <li><a href="/index.html" class="text-primary">Home</a></li>
+        <li><a href="/product.html" class="text-primary">Product</a></li>
+        <li><a href="/member.html" class="text-primary">Member</a></li>
+        <li><a href="/data.html" class="text-primary">Data</a></li>
+    </div>
+</div>
+<div class="row py-4">
+    <div class="col-12 col-md-5">
+        <img src="/img/index/toroidal_plasma.jpg" class="img-fluid" alt="Toroidal Plasma Image">
+    </div>
+    <div class="col-12 col-md-7 d-flex flex-column align-items-start">
+        <p class="h1 fw-bold">Toroidal Plasma</p>
+        <p class="fs-5">
+            Refers to a plasma (a hot, ionized gas consisting of free-moving electrons and ions) that is confined in a doughnut-shaped (toroidal) configuration. This shape is used in devices like tokamaks and stellarators to maintain stable conditions for nuclear fusion.
+        </p>
+            <h1 style="color: azure;">Not available</h1> 
+            <h4 style="color: rgb(105, 116, 116);">Không có hàng</h4> 
+                <a href="#" class="buy-now-btn">Don't buy</a>
+    </div>
+</div>
+<hr class="g-col-12" />
+
+<div class="row">
+    <div class="col-12">
+        <h2 class="fw-semibold text-primary">Technical Description</h2>
+        <p class="fs-6">Toroidal plasmas are central to modern fusion energy experiments. Magnetic confinement in a toroidal geometry minimizes particle loss and allows for longer plasma sustainment. These systems generate and maintain extreme temperatures (millions of degrees Celsius), necessary for fusion reactions to occur.</p>
+
+        <h3 class="mt-4">Core Components</h3>
+        <ul>
+            <li><strong>Plasma:</strong> Ionized gas made of nuclei (like deuterium and tritium) and electrons.</li>
+            <li><strong>Vacuum Vessel:</strong> The toroidal chamber where plasma is formed and confined.</li>
+            <li><strong>Toroidal Magnetic Field Coils:</strong> Create magnetic fields wrapping around the torus to confine plasma particles.</li>
+            <li><strong>Poloidal Field Coils:</strong> Control plasma shape and stability within the torus.</li>
+            <li><strong>Heating Systems:</strong> Include ohmic heating, neutral beam injection, and radiofrequency heating.</li>
+            <li><strong>Diagnostics:</strong> Tools to monitor plasma temperature, density, and confinement performance.</li>
+        </ul>
+
+        <h3 class="mt-4">Specifications</h3>
+        <table class="table table-bordered table-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Typical Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Major Radius (R)</td><td>1–6 m (tokamak devices)</td></tr>
+                <tr><td>Minor Radius (r)</td><td>0.5–2 m</td></tr>
+                <tr><td>Plasma Temperature</td><td>~150 million °C</td></tr>
+                <tr><td>Magnetic Field Strength</td><td>2–5 Tesla</td></tr>
+                <tr><td>Plasma Current</td><td>0.5–15 MA (Megaamperes)</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="mt-4">Fusion Devices Using Toroidal Plasma</h3>
+        <ul>
+            <li><strong>Tokamak:</strong> The most researched design; uses both toroidal and poloidal fields with a plasma current.</li>
+            <li><strong>Stellarator:</strong> Uses only external magnetic coils to achieve confinement, avoiding plasma current instabilities.</li>
+        </ul>
+
+        <h3 class="mt-4">Challenges</h3>
+        <ul>
+            <li>Plasma instabilities such as disruptions and edge localized modes (ELMs).</li>
+            <li>Material endurance under high neutron flux and thermal stress.</li>
+            <li>Achieving energy gain (Q &gt; 1) in a sustainable manner.</li>
+        </ul>
+
+        <h3 class="mt-4">Applications</h3>
+        <ul>
+            <li>Nuclear fusion energy research</li>
+            <li>Plasma physics studies</li>
+            <li>Space propulsion (conceptual toroidal plasma engines)</li>
+        </ul>
+    </div>
+</div>
+</body>
