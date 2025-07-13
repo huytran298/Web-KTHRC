@@ -32,33 +32,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Fixed size for carousel and its content */
-        #cloudCarousel {
-            width: 500px;
-            height: 375px;
-            max-width: 100%;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #cloudCarousel .carousel-inner,
-        #cloudCarousel .carousel-item {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #cloudCarousel img,
-        #cloudCarousel video {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-        }
-
         .buy-now-btn:hover {
             background: linear-gradient(135deg, #2196f3, #00bcd4);
             box-shadow: 0 6px 16px rgba(0, 150, 136, 0.4);
@@ -98,15 +71,15 @@
                             <span class="macos-only" style="display:none;">
                                 <a href="/videos/cloud1.mp4" download class="btn btn-primary">Download Video</a>
                             </span>
-                        <script>
-                        // Show the download link only on Mac OS
-                        document.addEventListener('DOMContentLoaded', function() {
-                        if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
-                            var macEls = document.querySelectorAll('.macos-only');
-                            macEls.forEach(function(el) { el.style.display = 'inline'; });
-                        }
-                        });
-                        </script>
+                    <script>
+                    // Show the download link only on Mac OS
+                    document.addEventListener('DOMContentLoaded', function() {
+                    if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
+                        var macEls = document.querySelectorAll('.macos-only');
+                        macEls.forEach(function(el) { el.style.display = 'inline'; });
+                    }
+                    });
+                    </script>
                     </div>
                     <div class="carousel-item">
                         <img src="/img/index/cloud.jpg" class="img-fluid" alt="Cloud Chamber Image 1">
