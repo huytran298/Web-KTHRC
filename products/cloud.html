@@ -42,6 +42,20 @@
             transform: translateY(1px);
             box-shadow: 0 3px 6px rgba(0, 188, 212, 0.2);
         }
+        /* Limit the hit box of carousel arrow buttons */
+        #cloudCarousel .carousel-control-prev,
+        #cloudCarousel .carousel-control-next {
+            width: 40px;
+            height: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.8;
+        }
+        #cloudCarousel .carousel-control-prev-icon,
+        #cloudCarousel .carousel-control-next-icon {
+            width: 24px;
+            height: 24px;
+        }
     </style>    
 </head>
 <body>
@@ -60,7 +74,27 @@
 <div id="main" class="container-fluid">
     <div class="row py-4">
         <div class="col-12 col-md-5">
-            <img src="/img/index/cloud.jpg" class="img-fluid" alt="Cloud Chamber Image">
+            <div id="cloudCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <video class="img-fluid" controls poster="/img/index/cloud1.jpg" alt="Cloud Chamber Video">
+                            <source src="/videos/cloud1.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/img/index/cloud.jpg" class="img-fluid" alt="Cloud Chamber Image 1">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#cloudCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#cloudCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
         </div>
         <div class="col-12 col-md-7 d-flex flex-column align-items-start">
             <p class="h1 fw-bold">Cloud Chamber</p>
