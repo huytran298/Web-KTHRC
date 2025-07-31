@@ -25,20 +25,16 @@ import('node-fetch').then(mod => {
 
     // Proxy /device requests
     app.get('/device', cors(corsOptions), async (req, res) => {
-        if (process.env.NODE_ENV === 'production') {
-            try {
-                const apiRes = await fetch('https://api.rabbitcave.com.vn/device');
-                if (!apiRes.ok) {
-                    return res.status(apiRes.status).json({ error: 'Upstream error', status: apiRes.status, statusText: apiRes.statusText });
-                }
-                const data = await apiRes.json();
-                res.setHeader('Access-Control-Allow-Origin', 'https://rabbitcave.com.vn');
-                res.json(data);
-            } catch (err) {
-                res.status(500).json({ error: 'Proxy error', details: err.message });
+        try {
+            const apiRes = await fetch('https://api.rabbitcave.com.vn/device');
+            if (!apiRes.ok) {
+                return res.status(apiRes.status).json({ error: 'Upstream error', status: apiRes.status, statusText: apiRes.statusText });
             }
-        } else {
+            const data = await apiRes.json();
             res.setHeader('Access-Control-Allow-Origin', 'https://rabbitcave.com.vn');
+            res.json(data);
+        } catch (err) {
+            res.status(500).json({ error: 'Proxy error', details: err.message });
         }
     });
 
