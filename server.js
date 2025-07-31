@@ -8,9 +8,22 @@ import('node-fetch').then(mod => {
 
     const app = express();
 
-    // Only allow requests from your frontend domain
+    // Allow requests from your frontend domain and local dev
+    const allowedOrigins = [
+        'https://rabbitcave.com.vn',
+        'http://localhost:5000',
+        'http://127.0.0.1:5000'
+    ];
     app.use(cors({
-        origin: 'https://rabbitcave.com.vn',
+        origin: function(origin, callback) {
+            // Allow requests with no origin (like mobile apps, curl, etc.)
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            } else {
+                return callback(new Error('Not allowed by CORS'));
+            }
+        },
         credentials: true
     }));
 
@@ -19,7 +32,14 @@ import('node-fetch').then(mod => {
 
     // CORS middleware for individual routes (optional)
     const corsOptions = {
-        origin: 'https://rabbitcave.com.vn',
+        origin: function(origin, callback) {
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            } else {
+                return callback(new Error('Not allowed by CORS'));
+            }
+        },
         credentials: true
     };
 
@@ -32,7 +52,8 @@ import('node-fetch').then(mod => {
                 return res.status(apiRes.status).json({ error: 'Upstream error', status: apiRes.status, statusText: apiRes.statusText });
             }
             const data = await apiRes.json();
-            res.setHeader('Access-Control-Allow-Origin', 'https://rabbitcave.com.vn');
+            // Set CORS header dynamically
+            res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
             res.json(data);
         } catch (err) {
             res.status(500).json({ error: 'Proxy error', details: err.message });
@@ -47,7 +68,7 @@ import('node-fetch').then(mod => {
                 return res.status(apiRes.status).json({ error: 'Upstream error', status: apiRes.status, statusText: apiRes.statusText });
             }
             const data = await apiRes.json();
-            res.setHeader('Access-Control-Allow-Origin', 'https://rabbitcave.com.vn');
+            res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
             res.json(data);
         } catch (err) {
             res.status(500).json({ error: 'Proxy error', details: err.message });
@@ -56,6 +77,7 @@ import('node-fetch').then(mod => {
 
     // Proxy /record requests
     app.get('/record', cors(corsOptions), async (req, res) => {
+        console.log('Received /record request', req.query);
         const params = new URLSearchParams(req.query).toString();
         try {
             const apiRes = await fetch(`https://api.rabbitcave.com.vn/record?${params}`);
@@ -63,7 +85,7 @@ import('node-fetch').then(mod => {
                 return res.status(apiRes.status).json({ error: 'Upstream error', status: apiRes.status, statusText: apiRes.statusText });
             }
             const data = await apiRes.json();
-            res.setHeader('Access-Control-Allow-Origin', 'https://rabbitcave.com.vn');
+            res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
             res.json(data);
         } catch (err) {
             res.status(500).json({ error: 'Proxy error', details: err.message });
