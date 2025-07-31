@@ -6,7 +6,7 @@ let yArray = [];
 const timeIntervals = 3000;
 
 // API endpoint
-const endpoint = 'https://api.rabbitcave.com.vn';
+const endpoint = window.location.origin.includes('localhost') ? 'http://localhost:5000' : 'https://api.rabbitcave.com.vn';
 
 // Variable to store interval ID for refreshing data
 let devices_intervals = undefined;
