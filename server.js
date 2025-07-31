@@ -76,9 +76,10 @@ import('node-fetch').then(mod => {
     });
 
     app.post("/record", (req, res) => {
-        console.log(req.body);
-        res.status(200).send("Data received");
+        console.log(req.body); // Log the incoming data
+        res.status(200).send("OK"); // MUST send a response!
         });
+
     // Proxy /record requests
     app.get('/record', cors(corsOptions), async (req, res) => {
         console.log('Received /record request', req.query);
