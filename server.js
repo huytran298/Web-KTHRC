@@ -27,7 +27,7 @@ import('node-fetch').then(mod => {
     app.get('/device', cors(corsOptions), async (req, res) => {
         if (process.env.NODE_ENV === 'production') {
             try {
-                const apiRes = await fetch('http://localhost:5000/device');  // avoid circular HTTPS loop
+                const apiRes = await fetch('https://api.rabbitcave.com.vn/device');
                 if (!apiRes.ok) {
                     return res.status(apiRes.status).json({ error: 'Upstream error', status: apiRes.status, statusText: apiRes.statusText });
                 }
@@ -39,24 +39,6 @@ import('node-fetch').then(mod => {
             }
         } else {
             res.setHeader('Access-Control-Allow-Origin', 'https://rabbitcave.com.vn');
-            res.json([
-                {
-                    id: 'dev001',
-                    name: 'Geiger Counter',
-                    type: 'Radiation Detector',
-                    status: 'active',
-                    cps: 123,
-                    lastUpdated: new Date().toISOString()
-                },
-                {
-                    id: 'dev002',
-                    name: 'MPPC',
-                    type: 'Photon Counter',
-                    status: 'inactive',
-                    cps: 0,
-                    lastUpdated: new Date().toISOString()
-                }
-            ]);
         }
     });
 
@@ -64,7 +46,7 @@ import('node-fetch').then(mod => {
     app.get('/record', cors(corsOptions), async (req, res) => {
         const params = new URLSearchParams(req.query).toString();
         try {
-            const apiRes = await fetch(`http://localhost:5000/record?${params}`);
+            const apiRes = await fetch(`https://api.rabbitcave.com.vn/record?${params}`);
             if (!apiRes.ok) {
                 return res.status(apiRes.status).json({ error: 'Upstream error', status: apiRes.status, statusText: apiRes.statusText });
             }
