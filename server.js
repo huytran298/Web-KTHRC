@@ -1,40 +1,44 @@
 const express = require('express');
 const cors = require('cors');
-// Only declare fetch once
-// Delay server start until node-fetch is loaded
+
 let fetch;
+
 import('node-fetch').then(mod => {
     fetch = mod.default;
 
     const app = express();
 
-    // Enable CORS for all routes
-    app.use(cors());
+    // Only allow requests from your frontend domain
+    app.use(cors({
+        origin: 'https://rabbitcave.com.vn',
+        credentials: true
+    }));
 
-    // Serve static files (HTML, CSS, JS, images, fonts)
+    // Serve static files (HTML, JS, etc.)
     app.use(express.static(__dirname));
 
+    // CORS middleware for individual routes (optional)
+    const corsOptions = {
+        origin: 'https://rabbitcave.com.vn',
+        credentials: true
+    };
+
     // Proxy /device requests
-    app.get('/device', async (req, res) => {
+    app.get('/device', cors(corsOptions), async (req, res) => {
         if (process.env.NODE_ENV === 'production') {
-            // Use real API in production
             try {
-                const apiRes = await fetch('https://api.rabbitcave.com.vn/device');
+                const apiRes = await fetch('http://localhost:5000/device');  // avoid circular HTTPS loop
                 if (!apiRes.ok) {
                     return res.status(apiRes.status).json({ error: 'Upstream error', status: apiRes.status, statusText: apiRes.statusText });
                 }
-                let data;
-                try {
-                    data = await apiRes.json();
-                } catch (jsonErr) {
-                    return res.status(502).json({ error: 'Invalid JSON from upstream', details: jsonErr.message });
-                }
+                const data = await apiRes.json();
+                res.setHeader('Access-Control-Allow-Origin', 'https://rabbitcave.com.vn');
                 res.json(data);
             } catch (err) {
                 res.status(500).json({ error: 'Proxy error', details: err.message });
             }
         } else {
-            // Mock device data for development
+            res.setHeader('Access-Control-Allow-Origin', 'https://rabbitcave.com.vn');
             res.json([
                 {
                     id: 'dev001',
@@ -57,19 +61,15 @@ import('node-fetch').then(mod => {
     });
 
     // Proxy /record requests
-    app.get('/record', async (req, res) => {
+    app.get('/record', cors(corsOptions), async (req, res) => {
         const params = new URLSearchParams(req.query).toString();
         try {
-            const apiRes = await fetch(`https://api.rabbitcave.com.vn/record?${params}`);
+            const apiRes = await fetch(`http://localhost:5000/record?${params}`);
             if (!apiRes.ok) {
                 return res.status(apiRes.status).json({ error: 'Upstream error', status: apiRes.status, statusText: apiRes.statusText });
             }
-            let data;
-            try {
-                data = await apiRes.json();
-            } catch (jsonErr) {
-                return res.status(502).json({ error: 'Invalid JSON from upstream', details: jsonErr.message });
-            }
+            const data = await apiRes.json();
+            res.setHeader('Access-Control-Allow-Origin', 'https://rabbitcave.com.vn');
             res.json(data);
         } catch (err) {
             res.status(500).json({ error: 'Proxy error', details: err.message });
@@ -82,4 +82,3 @@ import('node-fetch').then(mod => {
         console.log('Static files served from:', __dirname);
     });
 });
-
