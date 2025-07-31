@@ -1,4 +1,3 @@
-// ...existing code...
 const express = require('express');
 const cors = require('cors');
 
@@ -25,6 +24,21 @@ import('node-fetch').then(mod => {
     };
 
     // Proxy /device-data requests (fetch all device records)
+    app.get('/device-data', cors(corsOptions), async (req, res) => {
+        const params = new URLSearchParams(req.query).toString();
+        try {
+            const apiRes = await fetch(`https://api.rabbitcave.com.vn/record?${params}`);
+            if (!apiRes.ok) {
+                return res.status(apiRes.status).json({ error: 'Upstream error', status: apiRes.status, statusText: apiRes.statusText });
+            }
+            const data = await apiRes.json();
+            res.setHeader('Access-Control-Allow-Origin', 'https://rabbitcave.com.vn');
+            res.json(data);
+        } catch (err) {
+            res.status(500).json({ error: 'Proxy error', details: err.message });
+        }
+    });
+
     // Proxy /device requests
     app.get('/device', cors(corsOptions), async (req, res) => {
         try {
@@ -42,22 +56,6 @@ import('node-fetch').then(mod => {
 
     // Proxy /record requests
     app.get('/record', cors(corsOptions), async (req, res) => {
-        const params = new URLSearchParams(req.query).toString();
-        try {
-            const apiRes = await fetch(`https://api.rabbitcave.com.vn/record?${params}`);
-            if (!apiRes.ok) {
-                return res.status(apiRes.status).json({ error: 'Upstream error', status: apiRes.status, statusText: apiRes.statusText });
-            }
-            const data = await apiRes.json();
-            res.setHeader('Access-Control-Allow-Origin', 'https://rabbitcave.com.vn');
-            res.json(data);
-        } catch (err) {
-            res.status(500).json({ error: 'Proxy error', details: err.message });
-        }
-    });
-
-    // Proxy /device-data requests (fetch all device records)
-    app.get('/device-data', cors(corsOptions), async (req, res) => {
         const params = new URLSearchParams(req.query).toString();
         try {
             const apiRes = await fetch(`https://api.rabbitcave.com.vn/record?${params}`);
