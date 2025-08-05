@@ -87,35 +87,51 @@ import('node-fetch').then(mod => {
         res.status(200).send("OK");
     });
 
-app.get('/record', cors(corsOptions), async (req, res) => {
-    console.log('Received GET /record request', req.query);
-    const params = new URLSearchParams(req.query).toString();
-    try {
-        const apiRes = await fetch(`https://api.rabbitcave.com.vn/record?${params}`);
-        if (!apiRes.ok) {
-            return res.status(apiRes.status).json({
-                error: 'Upstream error', 
-                status: apiRes.status,
-                statusText: apiRes.statusText
-            });
-        }
-        const data = await apiRes.json();
-        res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
-        res.json(data);
-    } catch (err) {
-        console.error("Error fetching records:", err);
-        res.status(500).json({ error: 'Proxy error', details: err.message });
-    }
-});
+    let latestDeviceData = null;    
 
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-        console.log('Static files served from:', __dirname);
+    app.post('/testconnection', (req, res) => {
+    latestDeviceData = {
+        data: req.body,
+        receivedAt: new Date().toISOString()
+    };
+    console.log("Received from device:", latestDeviceData);
+    res.json({ success: true, message: "Data stored" });
     });
-});
 
-app.post('/testconnection', (req, res) => {
-    console.log("Received data:", req.body);
-    res.json({ success: true, message: "Data received" });
-});
+    // GET /testconnection — browser or frontend views latest data
+    app.get('/testconnection', (req, res) => {
+    if (latestDeviceData) {
+        res.json(latestDeviceData);
+    } else {
+        res.status(404).json({ message: "No data received yet" });
+    }
+    });
+
+    app.get('/record', cors(corsOptions), async (req, res) => {
+        console.log('Received GET /record request', req.query);
+        const params = new URLSearchParams(req.query).toString();
+        try {
+            const apiRes = await fetch(`https://api.rabbitcave.com.vn/record?${params}`);
+            if (!apiRes.ok) {
+                return res.status(apiRes.status).json({
+                    error: 'Upstream error', 
+                    status: apiRes.status,
+                    statusText: apiRes.statusText
+                });
+            }
+            const data = await apiRes.json();
+            res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+            res.json(data);
+        } catch (err) {
+            console.error("Error fetching records:", err);
+            res.status(500).json({ error: 'Proxy error', details: err.message });
+        }
+    });
+
+        const PORT = process.env.PORT || 5000;
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+            console.log('Static files served from:', __dirname);
+        });
+    });
+
