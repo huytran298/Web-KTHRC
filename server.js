@@ -1,213 +1,138 @@
+// server.js
+import express from 'express';
+import cors from 'cors';
+import Database from 'better-sqlite3';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-let fetch;
+// —— boilerplate to get __dirname in ES module:
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = path.dirname(__filename);
 
-import('node-fetch').then(mod => {
-    fetch = mod.default;
-    const express = require('express');
-    const cors = require('cors');
+const app = express();
+app.use(express.json());
 
+const allowedOrigins = [
+  'https://rabbitcave.com.vn',
+  'http://localhost:5000',
+  'http://127.0.0.1:5000'
+];
+app.use(cors({
+  origin: (origin, cb) => {
+    if (!origin || allowedOrigins.includes(origin)) cb(null, true);
+    else cb(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
 
-    const app = express();
+// serve your static frontend:
+app.use(express.static(__dirname));
 
-    // ✅ Add this line to parse incoming JSON data
-    app.use(express.json());
+// ——— SQLite setup ———
+const db = new Database(path.join(__dirname, 'data', 'records.db'));
 
-    // Allow requests from your frontend domain and local dev
-    const allowedOrigins = [
-        'https://rabbitcave.com.vn',
-        'http://localhost:5000',
-        'http://127.0.0.1:5000'
-    ];
-    app.use(cors({
-        origin: function(origin, callback) {
-            if (!origin) return callback(null, true);
-            if (allowedOrigins.includes(origin)) {
-                return callback(null, true);
-            } else {
-                return callback(new Error('Not allowed by CORS'));
-            }
-        },
-        credentials: true
-    }));
+// ensure `data/` exists and schema is ready:
+db.exec(`
+  CREATE TABLE IF NOT EXISTS records (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    deviceID    TEXT    NOT NULL,
+    timeStamp   INTEGER NOT NULL,
+    Cps         INTEGER NOT NULL,
+    uSv         REAL    NOT NULL,
+    receivedAt  DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+  CREATE INDEX IF NOT EXISTS idx_device ON records(deviceID);
+  CREATE INDEX IF NOT EXISTS idx_time   ON records(timeStamp);
+`);
 
-    // Serve static files (HTML, JS, etc.)
-    app.use(express.static(__dirname));
+const insertStmt = db.prepare(`
+  INSERT INTO records (deviceID, timeStamp, Cps, uSv, receivedAt)
+  VALUES (@deviceID, @timeStamp, @Cps, @uSv, @receivedAt)
+`);
+const selectAllStmt = db.prepare(`
+  SELECT * FROM records
+  /**where**/
+  ORDER BY timeStamp ASC
+`);
+const selectDistinctDevicesStmt = db.prepare(`
+  SELECT DISTINCT deviceID FROM records
+  ORDER BY deviceID
+`);
 
-    const corsOptions = {
-        origin: function(origin, callback) {
-            if (!origin) return callback(null, true);
-            if (allowedOrigins.includes(origin)) {
-                return callback(null, true);
-            } else {
-                return callback(new Error('Not allowed by CORS'));
-            }
-        },
-        credentials: true
-    };
+// ——— Endpoints ———
 
-    app.get('/device-data', cors(corsOptions), async (req, res) => {
-        const params = new URLSearchParams(req.query).toString();
-        try {
-            const apiRes = await fetch(`https://api.rabbitcave.com.vn/record?${params}`);
-            if (!apiRes.ok) {
-                return res.status(apiRes.status).json({
-                    error: 'Upstream error',
-                    status: apiRes.status,
-                    statusText: apiRes.statusText
-                });
-            }
-            const data = await apiRes.json();
-            res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
-            res.json(data);
-        } catch (err) {
-            res.status(500).json({ error: 'Proxy error', details: err.message });
-        }
+// 1) Write incoming testconnection payload into SQLite
+app.post('/testconnection', (req, res) => {
+  const { data, receivedAt } = req.body;
+  if (!data?.deviceID || data.timeStamp == null || data.Cps == null || data.uSv == null) {
+    return res.status(400).json({ error: 'Malformed payload' });
+  }
+  try {
+    insertStmt.run({
+      deviceID:   data.deviceID.toString(),
+      timeStamp:  parseInt(data.timeStamp, 10),
+      Cps:        parseInt(data.Cps, 10),
+      uSv:        parseFloat(data.uSv),
+      receivedAt: receivedAt ? new Date(receivedAt).toISOString() : new Date().toISOString()
     });
+    res.json({ status: 'ok' });
+  } catch (err) {
+    console.error('SQLite insert error:', err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
 
-    app.get('/device', cors(corsOptions), async (req, res) => {
-        try {
-            const apiRes = await fetch('https://api.rabbitcave.com.vn/device');
-            if (!apiRes.ok) {
-                return res.status(apiRes.status).json({
-                    error: 'Upstream error',
-                    status: apiRes.status,
-                    statusText: apiRes.statusText
-                });
-            }
-            const data = await apiRes.json();
-            res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
-            res.json(data);
-        } catch (err) {
-            res.status(500).json({ error: 'Proxy error', details: err.message });
-        }
-    });
+// 2) GET /records?deviceID=&startTime=&endTime=
+app.get('/records', (req, res) => {
+  const { deviceID, startTime, endTime } = req.query;
+  let whereClauses = [];
+  let params = {};
 
-    // ✅ Now this will correctly log incoming JSON from ESP32
-    app.post("/record", (req, res) => {
-        console.log(req.body);
-        res.status(200).send("OK");
-    });
+  if (deviceID) {
+    whereClauses.push('deviceID = @deviceID');
+    params.deviceID = deviceID;
+  }
+  if (startTime) {
+    whereClauses.push('timeStamp >= @startTime');
+    params.startTime = parseInt(startTime, 10);
+  }
+  if (endTime) {
+    whereClauses.push('timeStamp <= @endTime');
+    params.endTime = parseInt(endTime, 10);
+  }
 
-    let latestDeviceData = null;    
+  // inject WHERE if needed
+  const sql = selectAllStmt.source.replace(
+    '/**where**/',
+    whereClauses.length ? `WHERE ${whereClauses.join(' AND ')}` : ''
+  );
 
-    const history = [];
+  try {
+    const stmt = db.prepare(sql);
+    const rows = stmt.all(params);
+    res.json(rows);
+  } catch (err) {
+    console.error('SQLite query error:', err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
 
-    // index.js
-// At the top of your file (already present)
-    require('dotenv').config();
-    const mysql = require('mysql2/promise');
-    const bodyParser = require('body-parser');
+// 3) GET /devices
+app.get('/devices', (_req, res) => {
+  try {
+    const rows = selectDistinctDevicesStmt.all();
+    // return bare array of IDs:
+    res.json(rows.map(r => r.deviceID));
+  } catch (err) {
+    console.error('SQLite query error:', err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
 
-    app.use(bodyParser.json());
+// fall-through to proxy others, static etc.
+// ... (your existing `/device`, `/record` proxy handlers) ...
 
-    const pool = mysql.createPool({
-    host:     'localhost',
-    port:     3306,
-    user:     'your_mysql_user',
-    password: 'your_mysql_pass',
-    database: 'your_database',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-    });
-
-    // 1) POST incoming payload to /testconnection and save to MySQL
-    app.post('/testconnection', async (req, res) => {
-    const { data, receivedAt } = req.body;
-    if (!data || !data.deviceID || !data.timeStamp || !data.Cps || data.uSv === undefined) {
-        return res.status(400).json({ error: 'Malformed payload' });
-    }
-
-    try {
-        const sql = `INSERT INTO records
-        (deviceID, timeStamp, Cps, uSv, receivedAt)
-        VALUES (?, ?, ?, ?, ?)`;
-        const params = [
-        data.deviceID,
-        parseInt(data.timeStamp, 10),
-        parseInt(data.Cps, 10),
-        parseFloat(data.uSv),
-        receivedAt ? new Date(receivedAt) : new Date()
-        ];
-        await pool.execute(sql, params);
-        res.json({ status: 'ok' });
-    } catch (err) {
-        console.error('DB insert error:', err);
-        res.status(500).json({ error: 'Database error' });
-    }
-    });
-
-    // 2) GET all records (optionally filtered by deviceID)
-    app.get('/records', async (req, res) => {
-    const { deviceID, startTime, endTime } = req.query;
-    let sql = 'SELECT * FROM records';
-    const where = [];
-    const params = [];
-
-    if (deviceID) {
-        where.push('deviceID = ?');
-        params.push(deviceID);
-    }
-    if (startTime) {
-        where.push('timeStamp >= ?');
-        params.push(parseInt(startTime, 10));
-    }
-    if (endTime) {
-        where.push('timeStamp <= ?');
-        params.push(parseInt(endTime, 10));
-    }
-    if (where.length) sql += ' WHERE ' + where.join(' AND ');
-    sql += ' ORDER BY timeStamp ASC';
-
-    try {
-        const [rows] = await pool.execute(sql, params);
-        res.json(rows);
-    } catch (err) {
-        console.error('DB query error:', err);
-        res.status(500).json({ error: 'Database error' });
-    }
-    });
-
-    // 3) GET distinct device list
-    app.get('/devices', async (_req, res) => {
-    try {
-        const [rows] = await pool.execute(
-        'SELECT DISTINCT deviceID FROM records ORDER BY deviceID'
-        );
-        res.json(rows.map(r => r.deviceID));
-    } catch (err) {
-        console.error('DB query error:', err);
-        res.status(500).json({ error: 'Database error' });
-    }
-    });
-
-
-
-    app.get('/record', cors(corsOptions), async (req, res) => {
-        console.log('Received GET /record request', req.query);
-        const params = new URLSearchParams(req.query).toString();
-        try {
-            const apiRes = await fetch(`https://api.rabbitcave.com.vn/record?${params}`);
-            if (!apiRes.ok) {
-                return res.status(apiRes.status).json({
-                    error: 'Upstream error', 
-                    status: apiRes.status,
-                    statusText: apiRes.statusText
-                });
-            }
-            const data = await apiRes.json();
-            res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
-            res.json(data);
-        } catch (err) {
-            console.error("Error fetching records:", err);
-            res.status(500).json({ error: 'Proxy error', details: err.message });
-        }
-    });
-
-        const PORT = process.env.PORT || 5000;
-        app.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
-            console.log('Static files served from:', __dirname);
-        });
-    });
-
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
