@@ -198,66 +198,82 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Function to fetch data and update chart
-async function getData(apiUrl, id) {
+// Add loading state
+let isLoading = false;
+
+// Add retry logic to getData
+async function getData(apiUrl, id, retries = 3) {
+    if (isLoading) return;
+    isLoading = true;
+    
     try {
-        apiUrl += id;
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error('Http error! Status : ${response.status}$');
-        }
-        const data = await response.json();
-        if (data.error) {
-            console.warn("API Error:", data.error);
-            return null;
-        }
+        for (let i = 0; i < retries; i++) {
+            try {
+                const response = await fetch(`${apiUrl}${id}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                if (data.error) {
+                    console.warn("API Error:", data.error);
+                    return null;
+                }
 
-        const devices = Array.isArray(data) ? data : [data];
-        devices.forEach(device => {
-            const myUnixTimestamp = device.timeStamp; // start with a Unix timestamp
-            const myDate = new Date(myUnixTimestamp * 1000); // convert timestamp to milliseconds and construct Date object
-            xArray.push(myDate);
-            yArray.push(parseInt(device.Cps).toString());
-        });
+                // Clear previous data
+                xArray = [];
+                yArray = [];
 
-        const dataDevice = [{
-            x: xArray,
-            y: yArray,
-            type: 'scatter',
-            marker: {
-                color: 'black',
+                // Process data
+                data.forEach(record => {
+                    const timestamp = new Date(record.timeStamp * 1000);
+                    xArray.push(timestamp);
+                    yArray.push(parseFloat(record.Cps));
+                });
+
+                // Update plot
+                const dataDevice = [{
+                    x: xArray,
+                    y: yArray,
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: 'white', width: 2 }
+                }];
+
+                const layout = {
+                    xaxis: { 
+                        title: "Time",
+                        gridcolor: 'rgb(255, 255, 255)',
+                        color: 'white'
+                    },
+                    yaxis: { 
+                        title: "CPS",
+                        gridcolor: 'rgb(255, 255, 255)',
+                        color: 'white'
+                    },
+                    paper_bgcolor: '#00000000',
+                    plot_bgcolor: '#00000000',
+                    title: { 
+                        text: `Device ${id} Data`,
+                        font: { color: 'white' }
+                    }
+                };
+
+                Plotly.newPlot("myPlot", dataDevice, layout, { scrollZoom: true });
+                return data;
+            } catch (error) {
+                console.error(`Attempt ${i + 1} failed:`, error);
+                if (i === retries - 1) throw error;
+                await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
             }
-        }];
-
-        // Define Layout
-        const layout = {
-            xaxis: {
-                autorange: true,
-                title: "Time",
-                gridcolor: 'rgb(255, 255, 255)',
-            },
-            yaxis: {
-                autorange: true,
-                title: "CPS",
-                gridcolor: 'rgb(255, 255, 255)',
-            },
-            title: "Data table",
-            paper_bgcolor: '#00000000',
-            plot_bgcolor: '#00000000',
-        };
-
-        // Display using Plotly
-        Plotly.newPlot("myPlot", dataDevice, layout, { scrollZoom: true });
-        console.log("Fetched devices:", devices);
-
-        // Set interval to refresh data
-        if (devices_intervals !== undefined) {
-            clearInterval(devices_intervals);
         }
-        devices_intervals = setInterval(() => {
-            listenForDevice(`${endpoint}/record?deviceID=`, id);
-        }, timeIntervals);
     } catch (error) {
-        console.error("Error fetching data: ", error);
+        console.error("Error fetching data:", error);
+        // Show error to user
+        const plot = document.getElementById("myPlot");
+        plot.innerHTML = `<div class="alert alert-danger">Error loading data: ${error.message}</div>`;
+    } finally {
+        isLoading = false;
     }
 }
 

@@ -87,25 +87,26 @@ import('node-fetch').then(mod => {
         res.status(200).send("OK");
     });
 
-    app.get('/record', cors(corsOptions), async (req, res) => {
-        console.log('Received /record request', req.query);
-        const params = new URLSearchParams(req.query).toString();
-        try {
-            const apiRes = await fetch(`https://api.rabbitcave.com.vn/record?${params}`);
-            if (!apiRes.ok) {
-                return res.status(apiRes.status).json({
-                    error: 'Upstream error',
-                    status: apiRes.status,
-                    statusText: apiRes.statusText
-                });
-            }
-            const data = await apiRes.json();
-            res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
-            res.json(data);
-        } catch (err) {
-            res.status(500).json({ error: 'Proxy error', details: err.message });
+app.get('/record', cors(corsOptions), async (req, res) => {
+    console.log('Received GET /record request', req.query);
+    const params = new URLSearchParams(req.query).toString();
+    try {
+        const apiRes = await fetch(`https://api.rabbitcave.com.vn/record?${params}`);
+        if (!apiRes.ok) {
+            return res.status(apiRes.status).json({
+                error: 'Upstream error', 
+                status: apiRes.status,
+                statusText: apiRes.statusText
+            });
         }
-    });
+        const data = await apiRes.json();
+        res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+        res.json(data);
+    } catch (err) {
+        console.error("Error fetching records:", err);
+        res.status(500).json({ error: 'Proxy error', details: err.message });
+    }
+});
 
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
