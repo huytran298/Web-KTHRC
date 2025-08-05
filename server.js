@@ -114,3 +114,8 @@ app.get('/record', cors(corsOptions), async (req, res) => {
         console.log('Static files served from:', __dirname);
     });
 });
+
+app.post('/testconnection', (req, res) => {
+    console.log("Received data:", req.body);
+    res.json({ success: true, message: "Data received" });
+});
