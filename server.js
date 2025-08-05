@@ -1,10 +1,11 @@
-const express = require('express');
-const cors = require('cors');
 
 let fetch;
 
 import('node-fetch').then(mod => {
     fetch = mod.default;
+    const express = require('express');
+    const cors = require('cors');
+
 
     const app = express();
 
@@ -89,23 +90,98 @@ import('node-fetch').then(mod => {
 
     let latestDeviceData = null;    
 
-    app.post('/testconnection', (req, res) => {
-    latestDeviceData = {
-        data: req.body,
-        receivedAt: new Date().toISOString()
-    };
-    console.log("Received from device:", latestDeviceData);
-    res.json({ success: true, message: "Data stored" });
+    const history = [];
+
+    // index.js
+// At the top of your file (already present)
+    require('dotenv').config();
+    const mysql = require('mysql2/promise');
+    const bodyParser = require('body-parser');
+
+    app.use(bodyParser.json());
+
+    const pool = mysql.createPool({
+    host:     'localhost',
+    port:     3306,
+    user:     'your_mysql_user',
+    password: 'your_mysql_pass',
+    database: 'your_database',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
     });
 
-    // GET /testconnection — browser or frontend views latest data
-    app.get('/testconnection', (req, res) => {
-    if (latestDeviceData) {
-        res.json(latestDeviceData);
-    } else {
-        res.status(404).json({ message: "No data received yet" });
+    // 1) POST incoming payload to /testconnection and save to MySQL
+    app.post('/testconnection', async (req, res) => {
+    const { data, receivedAt } = req.body;
+    if (!data || !data.deviceID || !data.timeStamp || !data.Cps || data.uSv === undefined) {
+        return res.status(400).json({ error: 'Malformed payload' });
+    }
+
+    try {
+        const sql = `INSERT INTO records
+        (deviceID, timeStamp, Cps, uSv, receivedAt)
+        VALUES (?, ?, ?, ?, ?)`;
+        const params = [
+        data.deviceID,
+        parseInt(data.timeStamp, 10),
+        parseInt(data.Cps, 10),
+        parseFloat(data.uSv),
+        receivedAt ? new Date(receivedAt) : new Date()
+        ];
+        await pool.execute(sql, params);
+        res.json({ status: 'ok' });
+    } catch (err) {
+        console.error('DB insert error:', err);
+        res.status(500).json({ error: 'Database error' });
     }
     });
+
+    // 2) GET all records (optionally filtered by deviceID)
+    app.get('/records', async (req, res) => {
+    const { deviceID, startTime, endTime } = req.query;
+    let sql = 'SELECT * FROM records';
+    const where = [];
+    const params = [];
+
+    if (deviceID) {
+        where.push('deviceID = ?');
+        params.push(deviceID);
+    }
+    if (startTime) {
+        where.push('timeStamp >= ?');
+        params.push(parseInt(startTime, 10));
+    }
+    if (endTime) {
+        where.push('timeStamp <= ?');
+        params.push(parseInt(endTime, 10));
+    }
+    if (where.length) sql += ' WHERE ' + where.join(' AND ');
+    sql += ' ORDER BY timeStamp ASC';
+
+    try {
+        const [rows] = await pool.execute(sql, params);
+        res.json(rows);
+    } catch (err) {
+        console.error('DB query error:', err);
+        res.status(500).json({ error: 'Database error' });
+    }
+    });
+
+    // 3) GET distinct device list
+    app.get('/devices', async (_req, res) => {
+    try {
+        const [rows] = await pool.execute(
+        'SELECT DISTINCT deviceID FROM records ORDER BY deviceID'
+        );
+        res.json(rows.map(r => r.deviceID));
+    } catch (err) {
+        console.error('DB query error:', err);
+        res.status(500).json({ error: 'Database error' });
+    }
+    });
+
+
 
     app.get('/record', cors(corsOptions), async (req, res) => {
         console.log('Received GET /record request', req.query);
