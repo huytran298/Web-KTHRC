@@ -51,24 +51,42 @@
         <a href="/index.html"><img src="/img/kth.svg" alt="Rabbit Cave"></a>
     </div>
     <div id="list">
-        <li><a href="/index.html" class="text-primary">Home</a></li>
-        <li><a href="/product.html" class="text-primary">Product</a></li>
+        <li><a href = "/index.html" class="text-primary">Home</a></li>
+        <li><a href = "./product.html" class="text-primary">Product</a></li>        
         <li><a href="/member.html" class="text-primary">Member</a></li>
-        <li><a href="/data.html" class="text-primary">Data</a></li>
+        <li><a href = "/activity.html" class="text-primary">Activities</a></li>
+        <li><a href = "/data.html" class="text-primary">Data</a></li>
     </div>
 </div>
-<div class="row py-4">
-    <div class="col-12 col-md-5">
-        <img src="/img/index/toroidal_plasma.jpg" class="img-fluid" alt="Toroidal Plasma Image">
+<div class="row d-flex align-items-center">
+    <div class="col-md-6">
+        <div id="plasCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/img/index/plas.jpg" class="d-block w-25 mx-auto" alt="Plasma Image 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="/img/index/plas1.jpg" class="d-block w-25 mx-auto" alt="Plasma Image 2">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#plasCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#plasCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
     </div>
-    <div class="col-12 col-md-7 d-flex flex-column align-items-start">
+    <div class="col-md-6 d-flex flex-column align-items-start">
         <p class="h1 fw-bold">Toroidal Plasma</p>
         <p class="fs-5">
             Refers to a plasma (a hot, ionized gas consisting of free-moving electrons and ions) that is confined in a doughnut-shaped (toroidal) configuration. This shape is used in devices like tokamaks and stellarators to maintain stable conditions for nuclear fusion.
         </p>
-            <h1 style="color: azure;">Not available</h1> 
-            <h4 style="color: rgb(105, 116, 116);">Không có hàng</h4> 
-                <a href="#" class="buy-now-btn">Don't buy</a>
+        <h1 style="color: azure;">Not available</h1>
+        <h4 style="color: rgb(105, 116, 116);">Không có hàng</h4>
+        <a href="#" class="buy-now-btn">Don't buy</a>
     </div>
 </div>
 <hr class="g-col-12" />
