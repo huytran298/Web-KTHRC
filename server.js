@@ -34,6 +34,23 @@ app.get('/health', (req, res) => {
 	res.status(200).json({ status: 'ok', uptime: process.uptime() });
 });
 
+// Device endpoint
+app.get('/device', (req, res) => {
+    const devices = []; // Replace with actual device data retrieval logic
+
+    if (devices.length === 0) {
+        return res.status(200).json({
+            message: "No devices available",
+            devices: []
+        });
+    }
+
+    res.status(200).json({
+        message: "Devices retrieved successfully",
+        devices: devices
+    });
+});
+
 // Export an app-like object with listen/close so index.js can call app.listen()
 module.exports = {
 	listen: (port, cb) => server.listen(port, cb),

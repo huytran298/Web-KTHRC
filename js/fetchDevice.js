@@ -12,50 +12,23 @@ const endpoint = 'https://api.rabbitcave.com.vn';
 let devices_intervals = undefined;
 
 // Function to fetch device data from the API
-async function fecthDevice(apiUrl) {
+async function fetchDevice(apiUrl) {
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
-            throw new Error('Http error! Status : ${response.status}$');
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
 
-        const outputList = document.getElementById("listDevice");
-        outputList.innerHTML = "";
-
         if (data.error) {
             console.warn("API Error:", data.error);
-            const listItem = document.createElement("li");
-            listItem.classList.add("dropdown-item");
-
-            const link = document.createElement("a");
-            link.textContent = "Không có thiết bị";
-            listItem.appendChild(link);
-            outputList.appendChild(listItem);
             return null;
         }
 
-        const devices = Array.isArray(data) ? data : [data];
-        devices.forEach(device => {
-            const listItem = document.createElement("li");
-            listItem.classList.add("dropdown-item"); // Assign class to each device
-
-            listItem.onclick = (event) => {
-                event.preventDefault(); // Prevent default navigation
-                getDevice(`${endpoint}/device?deviceID=`, device.deviceID);
-            };
-
-            const link = document.createElement("a");
-            link.textContent = `Device ${device.deviceID}`;
-            listItem.appendChild(link);
-            outputList.appendChild(listItem);
-        });
-
-        console.log("Fetched devices:", data);
         return data;
     } catch (error) {
         console.error("Error fetching data:", error);
-        console.error(apiUrl);
+        return null;
     }
 }
 
@@ -422,7 +395,7 @@ async function listenForDevice(apiUrl, id) {
 }
 
 // Initial fetch of device data
-fecthDevice(`${endpoint}/device`);
+fetchDevice(`${endpoint}/device`);
 
 // Function to export all devices data in the selected format
 async function exportAllDevicesData(format) {
