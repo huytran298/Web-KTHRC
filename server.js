@@ -65,8 +65,19 @@ app.get('/device', (req, res) => {
 });
 
 // Export an app-like object with listen/close so index.js can call app.listen()
+// at the end of server.js
 module.exports = {
-	listen: (port, cb) => server.listen(port, cb),
-	close: (cb) => server.close(cb),
-	server,
+  app, // Express app (optional, helpful)
+  server,
+  // support (port, hostname, callback) or (port, callback)
+  listen: (port, hostnameOrCb, cb) => {
+    if (typeof hostnameOrCb === 'function') {
+      // called as listen(port, callback)
+      return server.listen(port, hostnameOrCb);
+    } else {
+      // called as listen(port, hostname, callback)
+      return server.listen(port, hostnameOrCb, cb);
+    }
+  },
+  close: (cb) => server.close(cb),
 };
