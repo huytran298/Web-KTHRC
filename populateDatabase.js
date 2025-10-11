@@ -28,7 +28,7 @@ db.serialize(() => {
         ('Device A', 'Type 1'),
         ('Device B', 'Type 2'),
         ('Device C', 'Type 3'),
-        ('Device 12', 'Type 4');`;
+        ('Device D', 'Type 4');`;
 
     db.run(insertDevice, (err) => {
         if (err) {
