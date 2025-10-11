@@ -3,6 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
+const cors = require('cors');
+const { createDBconnection } = require('./src/modules/database');
 
 const app = express();
 const root = path.resolve(__dirname);
@@ -17,10 +19,16 @@ app.use(session({
 	}
 }));
 
+// Enable CORS
+app.use(cors());
+
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'src', 'public')));
+
+// Database connection
+const db = createDBconnection(path.join(__dirname, 'database', 'geiger.db'));
 
 // Routes
 const mainRoute = require("./src/router/indexRouter");
@@ -36,18 +44,23 @@ app.get('/health', (req, res) => {
 
 // Device endpoint
 app.get('/device', (req, res) => {
-    const devices = []; // Replace with actual device data retrieval logic
+    db.all('SELECT * FROM device', [], (err, rows) => {
+        if (err) {
+            console.error('Error fetching devices:', err);
+            return res.status(500).json({ error: 'Failed to fetch devices' });
+        }
 
-    if (devices.length === 0) {
-        return res.status(200).json({
-            message: "No devices available",
-            devices: []
+        if (rows.length === 0) {
+            return res.status(200).json({
+                message: 'No devices available',
+                devices: []
+            });
+        }
+
+        res.status(200).json({
+            message: 'Devices retrieved successfully',
+            devices: rows
         });
-    }
-
-    res.status(200).json({
-        message: "Devices retrieved successfully",
-        devices: devices
     });
 });
 
