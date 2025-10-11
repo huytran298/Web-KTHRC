@@ -1,0 +1,9 @@
+# Cloudflared configuration template
+# Replace <TUNNEL_NAME> with your tunnel name and set credentials-file path from cloudflared login
+tunnel: <TUNNEL_NAME>
+credentials-file: C:\\Users\\<YOUR_USER>\\.cloudflared\\<TUNNEL_ID>.json
+
+ingress:
+  - hostname: example.yourdomain.com
+    service: http://localhost:5000
+  - service: http_status:404
