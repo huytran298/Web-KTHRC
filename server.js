@@ -1,69 +1,37 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const express = require('express');
+const session = require('express-session');
 
-// Serve static files from project root
+const app = express();
 const root = path.resolve(__dirname);
 
-function contentTypeFor(ext) {
-	switch (ext) {
-		case '.html': return 'text/html; charset=utf-8';
-		case '.css': return 'text/css; charset=utf-8';
-		case '.js': return 'application/javascript; charset=utf-8';
-		case '.json': return 'application/json; charset=utf-8';
-		case '.png': return 'image/png';
-		case '.jpg':
-		case '.jpeg': return 'image/jpeg';
-		case '.svg': return 'image/svg+xml';
-		case '.ico': return 'image/x-icon';
-		case '.mp4': return 'video/mp4';
-		default: return 'application/octet-stream';
+// Session configuration
+app.use(session({
+	secret: 'your_secret_key',
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		maxAge: 1000 * 60 * 60 * 24, // 1 day
 	}
-}
+}));
 
-const server = http.createServer((req, res) => {
-	try {
-		const urlPath = decodeURI(req.url.split('?')[0] || '/');
+// Middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'src', 'public')));
 
-		// Health check for Cloudflare / monitoring
-		if (urlPath === '/health' || urlPath === '/_/health') {
-			res.writeHead(200, { 'Content-Type': 'application/json' });
-			res.end(JSON.stringify({ status: 'ok', uptime: process.uptime() }));
-			return;
-		}
+// Routes
+const mainRoute = require("./src/router/indexRouter");
+mainRoute(app);
 
-		// Default to index.html for root
-		let relPath = urlPath === '/' ? '/index.html' : urlPath;
+// Create HTTP server
+const server = http.createServer(app);
 
-		// Prevent path traversal
-		const safePath = path.normalize(relPath).replace(/^\.+/, '');
-		const filePath = path.join(root, safePath);
-
-		fs.stat(filePath, (err, stats) => {
-			if (err || !stats.isFile()) {
-				// If not found, respond 404 (don't try to serve directories)
-				res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-				res.end('Not found');
-				return;
-			}
-
-			const ext = path.extname(filePath).toLowerCase();
-			const contentType = contentTypeFor(ext);
-			res.writeHead(200, { 'Content-Type': contentType });
-			const stream = fs.createReadStream(filePath);
-			stream.pipe(res);
-			stream.on('error', () => {
-				res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
-				res.end('Server error');
-			});
-		});
-	} catch (ex) {
-		console.error('Request handler error', ex);
-		try {
-			res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
-			res.end('Server error');
-		} catch (_) {}
-	}
+// Health check endpoint
+app.get('/health', (req, res) => {
+	res.status(200).json({ status: 'ok', uptime: process.uptime() });
 });
 
 // Export an app-like object with listen/close so index.js can call app.listen()
