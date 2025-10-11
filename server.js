@@ -25,7 +25,7 @@ app.use(cors());
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'src', 'public')));
+app.use(express.static(path.join(__dirname))); // Serve static files from the root directory
 
 // Database connection
 const db = createDBconnection(path.join(__dirname, 'database', 'geiger.db'));
