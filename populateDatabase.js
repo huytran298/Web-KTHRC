@@ -18,21 +18,24 @@ db.serialize(() => {
 
     db.run(createDeviceTable, (err) => {
         if (err) {
-            return console.error('Error creating device table:', err.message);
+            console.error('Error creating device table:', err.message);
+        } else {
+            console.log('Device table created or already exists.');
         }
-        console.log('Device table ensured.');
     });
 
     const insertDevice = `INSERT INTO device (deviceName, deviceType) VALUES
         ('Device A', 'Type 1'),
         ('Device B', 'Type 2'),
-        ('Device C', 'Type 3');`;
+        ('Device C', 'Type 3'),
+        ('Device 12', 'Type 4');`;
 
     db.run(insertDevice, (err) => {
         if (err) {
-            return console.error('Error inserting devices:', err.message);
+            console.error('Error inserting devices:', err.message);
+        } else {
+            console.log('Devices inserted successfully.');
         }
-        console.log('Sample devices inserted.');
     });
 });
 
